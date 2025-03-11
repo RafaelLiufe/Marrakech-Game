@@ -1,0 +1,3 @@
+#define TAM
+
+int dado();
