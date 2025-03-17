@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1742252757 source:c:\users\kaike\desktop\algoritmos\marrakech-game\main.c
+	<stdio.h>
+	<stdlib.h>
+	"jogo.h"
+	<time.h>
+
+1742252757 c:\users\kaike\desktop\algoritmos\marrakech-game\jogo.h
+
+1742251814 source:c:\users\kaike\desktop\algoritmos\marrakech-game\jogo.c
+	<stdio.h>
+	<stdlib.h>
+	"jogo.h"
+	<time.h>
+	<string.h>
+
