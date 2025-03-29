@@ -20,8 +20,8 @@ int main(){
         }
     }
     system("cls");
-    Assam peca =criarAssam();
-    Tabuleiro *board = criarT();
+    Assam *piece = criarAssam();
+    Tabuleiro *board = criarTabuleiro(piece);
     do{
 
     }while(0);

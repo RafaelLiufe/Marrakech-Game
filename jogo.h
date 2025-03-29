@@ -3,11 +3,13 @@ typedef struct espaco Espaco;
 typedef Espaco* Tabuleiro;
 typedef struct tap* Pilha;
 typedef struct assam* Assam;
+typedef struct lista* Jogadores;
 
-Tabuleiro* criarT();
+Tabuleiro* criarTabuleiro();
 Pilha* criarP();
 int dado();
-typedef struct lista* Jogadores;
 Jogadores* listaJogadores(int);
 int setPlayer(Jogadores*, int, int);
-Assam criarAssam();
+Assam* criarAssam();
+int moverAssam(Tabuleiro*, Assam*, int, int);
+int putTapete(Tabuleiro*, Assam*, int, int, Jogadores*, int);
