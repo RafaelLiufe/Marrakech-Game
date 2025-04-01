@@ -1,4 +1,4 @@
-#define TAM 4
+#define TAM 5
 typedef struct espaco Espaco;
 typedef Espaco* Tabuleiro;
 typedef struct tap* Pilha;
