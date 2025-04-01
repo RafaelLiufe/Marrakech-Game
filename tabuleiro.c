@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tabuleiro.h"
+//empilha(Pilha*, Pilha*, char*)
 struct espaco {
     Pilha* tapetes;
     struct espaco* norte;
@@ -11,14 +12,11 @@ struct espaco {
     int coluna;
 };
 struct tap {
-    struct tdata* dados;
+    char cor[10];
     struct tap* prox;
     struct tap* outro;
 };
-struct tdata {
-    int jogador;
-};
-Pilha* criarP() {
+Pilha* criarPilha() {
     Pilha* p = (Pilha*)malloc(sizeof(Pilha));
     if (p != NULL) {
         *p = NULL;
@@ -32,14 +30,14 @@ Tabuleiro* criarT() {
     }
     *table = (Espaco*)malloc(sizeof(Espaco));
     Espaco* aux = *table;
-    aux->tapetes = criarP();
+    aux->tapetes = criarPilha();
     aux->linha = 0;
     aux->coluna = 0;
     for (int i = 1; i < TAM; i++) {
         aux->sul = (Espaco*)malloc(sizeof(Espaco));
         aux->sul->norte = aux;
         aux = aux->sul;
-        aux->tapetes = criarP();
+        aux->tapetes = criarPilha();
         aux->linha = i;
         aux->coluna = 0;
     }
@@ -53,7 +51,7 @@ Tabuleiro* criarT() {
             aux = aux->leste;
             aux->linha = i - 1;
             aux->coluna = j;
-            aux->tapetes = criarP();
+            aux->tapetes = criarPilha();
         }
         aux->leste = NULL;
         ref = ref->sul;
