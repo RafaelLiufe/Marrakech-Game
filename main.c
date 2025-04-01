@@ -2,17 +2,18 @@
 #include <stdlib.h>
 #include "jogo.h"
 #include <time.h>
+#include "tabuleiro.h"
 
 int main(){
     srand(time(NULL));
     int qnt, cor;
-    printf("Quantos jogadores participarão?\n");
+    printf("Quantos jogadores participarï¿½o?\n");
     scanf("%i", &qnt);
     Jogadores *lista_jogadores = listaJogadores(qnt);
     system("cls");
-    printf("Cores disponíveis:\n1.vermelho\n2.amarelo\n3.verde\n4.azul\n5.roxo\n");
+    printf("Cores disponï¿½veis:\n1.vermelho\n2.amarelo\n3.verde\n4.azul\n5.roxo\n");
     for(int i=0;i<qnt;i++){
-        printf("Jogador %i, qual cor você escolhe?\n", i+1);
+        printf("Jogador %i, qual cor vocï¿½ escolhe?\n", i+1);
         scanf("%i", &cor);
         if(!setPlayer(lista_jogadores, i, cor)){
             printf("ERRO\n");
@@ -25,5 +26,9 @@ int main(){
     do{
 
     }while(0);
+
+    Tabuleiro* table = criarT();
+
     return 0;
 }
+
