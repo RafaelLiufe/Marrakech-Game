@@ -7,6 +7,8 @@ struct espaco {
     struct espaco* sul;
     struct espaco* leste;
     struct espaco* oeste;
+    int linha;
+    int coluna;
 };
 struct tap {
     struct tdata* dados;
@@ -31,20 +33,26 @@ Tabuleiro* criarT() {
     *table = (Espaco*)malloc(sizeof(Espaco));
     Espaco* aux = *table;
     aux->tapetes = criarP();
+    aux->linha = 0;
+    aux->coluna = 0;
     for (int i = 1; i < TAM; i++) {
         aux->sul = (Espaco*)malloc(sizeof(Espaco));
         aux->sul->norte = aux;
         aux = aux->sul;
         aux->tapetes = criarP();
+        aux->linha = i;
+        aux->coluna = 0;
     }
     aux->sul = NULL;
     Espaco* ref = *table;
-    for (int i = 1; i < TAM; i++) {
+    for (int i = 1; i <= TAM; i++) {
         aux = ref;
         for (int j = 1; j < TAM; j++) {
             aux->leste = (Espaco*)malloc(sizeof(Espaco));
             aux->leste->oeste = aux;
             aux = aux->leste;
+            aux->linha = i - 1;
+            aux->coluna = j;
             aux->tapetes = criarP();
         }
         aux->leste = NULL;
@@ -66,83 +74,6 @@ Tabuleiro* criarT() {
             aux2 = aux2->sul;
         }
     }
-    //experimental
-    ref = *table;
-    int cont = 0;
-    while (ref != NULL) {
-        if (ref->leste == NULL && cont == 0) {
-            ref->norte = ref;
-            ref = ref->leste;
-        } else if (cont == 0) {
-            ref->norte = ref->leste;
-            ref = ref->leste;
-            cont++;
-        } else if (cont == 1) {
-            ref->norte = ref->oeste;
-            ref = ref->leste;
-            cont--;
-        }
-    }
-    ref = *table;
-    cont = 0;
-    while (ref != NULL) {
-        if (ref->sul == NULL && cont == 0) {
-            ref->oeste = ref;
-            ref = ref->sul;
-        } else if (cont == 0) {
-            ref->oeste = ref->sul;
-            ref = ref->sul;
-            cont++;
-        } else if (cont == 1) {
-            ref->oeste = ref->norte;
-            ref = ref->sul;
-            cont--;
-        }
-    }
-    ref = *table;
-    cont = 0;
-    while (ref->leste != NULL) {
-        ref = ref->leste;
-    }
-    if (ref->norte == ref) {
-        ref->leste = ref;
-        ref = ref->sul;
-    }
-    while (ref != NULL) {
-        if (cont == 0) {
-            ref->leste = ref->sul;
-            ref = ref->sul;
-            cont++;
-        } else if (cont == 1) {
-            ref->leste = (Espaco*)malloc(sizeof(Espaco)); //CORRIGIR DEPOIS
-            ref->leste = ref->norte;
-            ref = ref->sul;
-            cont--;
-        }
-    }
-    free(ref);
-    ref = (Espaco*)malloc(sizeof(Espaco));
-    ref = *table; //HÁ ERRO AQUI
-    printf("teste\n");
-    cont = 0;
-    while (ref->sul != NULL) {
-        ref = ref->sul;
-    }
-    if (ref->oeste == ref) {
-        ref->sul = ref;
-        ref = ref->leste;
-    }
-    do {
-        if (cont == 0) {
-            ref->sul = ref->oeste;
-            ref = ref->oeste;
-            cont++;
-        } else if (cont == 1) {
-            ref->sul = ref->oeste;
-            ref = ref->leste;
-            cont--;
-        }
-    } while (ref->oeste != ref);
 
     return table;
 }

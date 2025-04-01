@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1741793774 source:c:\users\rafael\documents\marrakech-game\main.c
+	<stdio.h>
+	<stdlib.h>
+	"tabuleiro.h"
+
+1741793656 c:\users\rafael\documents\marrakech-game\tabuleiro.h
+
+1743467657 source:c:\users\rafael\documents\marrakech-game\tabuleiro.c
+	<stdio.h>
+	<stdlib.h>
+	"tabuleiro.h"
+
