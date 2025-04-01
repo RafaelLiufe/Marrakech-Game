@@ -4,10 +4,11 @@
 	<stdlib.h>
 	"tabuleiro.h"
 
-1743515280 c:\users\rafael\documents\marrakech-game\tabuleiro.h
+1743515419 c:\users\rafael\documents\marrakech-game\tabuleiro.h
 
-1743468928 source:c:\users\rafael\documents\marrakech-game\tabuleiro.c
+1743516902 source:c:\users\rafael\documents\marrakech-game\tabuleiro.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	"tabuleiro.h"
 

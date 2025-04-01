@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "tabuleiro.h"
-//empilha(Pilha*, Pilha*, char*)
 struct espaco {
     Pilha* tapetes;
     struct espaco* norte;
@@ -16,12 +16,27 @@ struct tap {
     struct tap* prox;
     struct tap* outro;
 };
+typedef struct tap Tap;
 Pilha* criarPilha() {
     Pilha* p = (Pilha*)malloc(sizeof(Pilha));
     if (p != NULL) {
         *p = NULL;
     }
     return p;
+}
+void empilha(Pilha* p1, Pilha* p2, char* cor) {
+    if (p1 != NULL || p2 != NULL) {
+        Tap* e1 = (Tap*)malloc(sizeof(Tap));
+        strcpy(e1->cor, cor);
+        Tap* e2 = (Tap*)malloc(sizeof(Tap));
+        strcpy(e2->cor, cor);
+        e1->outro = e2;
+        e2->outro = e1;
+        e1->prox = *p1;
+        *p1 = e1;
+        e2->prox = *p2;
+        *p2 = e2;
+    }
 }
 Tabuleiro* criarT() {
     Tabuleiro* table = (Tabuleiro*)malloc(sizeof(Tabuleiro));

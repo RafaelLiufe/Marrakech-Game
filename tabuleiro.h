@@ -5,4 +5,4 @@ typedef struct tap* Pilha;
 
 Tabuleiro* criarT();
 Pilha* criarP();
-//void empilha(Pilha*, Pilha*, char*);
+void empilha(Pilha*, Pilha*, char*);
