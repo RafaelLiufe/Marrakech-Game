@@ -5,34 +5,48 @@
 #include "tabuleiro.h"
 #include "jogadores.h"
 
+void seeds(ListaJogadores*, int);
+
 int main(){
     ListaJogadores* lista = criarListaJogadores();
 
-    destruirListaJogadores(lista);
-//    srand(time(NULL));
-//    int qnt, cor;
-//    printf("Quantos jogadores participar�o?\n");
-//    scanf("%i", &qnt);
-//    Jogadores *lista_jogadores = listaJogadores(qnt);
-//    system("cls");
-//    printf("Cores dispon�veis:\n1.vermelho\n2.amarelo\n3.verde\n4.azul\n5.roxo\n");
-//    for(int i=0;i<qnt;i++){
-//        printf("Jogador %i, qual cor voc� escolhe?\n", i+1);
-//        scanf("%i", &cor);
-//        if(!setPlayer(lista_jogadores, i, cor)){
-//            printf("ERRO\n");
-//            return 0;
-//        }
-//    }
-//    system("cls");
-//    Assam *piece = criarAssam();
-//    Tabuleiro *board = criarTabuleiro(piece);
-//    do{
-//
-//    }while(0);
-//
-//    Tabuleiro* table = criarT();
+    int qnt, cor;
+    printf("Quantos jogadores participarao?\n");
+    scanf("%i", &qnt);
 
+    seeds(lista, qnt);
+
+    printf("qtd inicial: %d \n", tamanhoListaJogadores(lista));
+    int success = removerMeioListaJogadores(lista, "vermelho");
+
+        if(success){
+            printf("sucesso remover\n");
+        }
+        else{
+            printf("error remover\n");
+        }
+        printf("qtd final: %d \n", tamanhoListaJogadores(lista));
     return 0;
 }
 
+void seeds(ListaJogadores *lc, int qtd){
+    struct jogador novo;
+    int success;
+    const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
+
+    for(int i = 0; i < qtd; i++){
+        novo.quantidadeTapetes = 10;
+        novo.dinheiro = 10;
+
+        snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
+        success = inserirFimListaJogadores(lc ,novo);
+
+        if(success){
+            printf("sucesso insert: %d \n", i);
+        }
+        else{
+            printf("error insert: %d", i);
+        }
+    }
+    printf("Jogaodres inseridos! \n");
+}
