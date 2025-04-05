@@ -13,3 +13,11 @@ int vaziaListaJogadores(ListaJogadores*);
 int cheiaListaJogadores(ListaJogadores*);
 int inserirFimListaJogadores(ListaJogadores*, struct jogador);
 int removerMeioListaJogadores(ListaJogadores*,const char*);
+void imprimirListaJogadores(ListaJogadores*);
+
+int removerDinheiroListaJogadores(ListaJogadores*,const char*, int);
+int adicinarDinheiroListaJogadores(ListaJogadores*,const char*, int);
+int removerTapeteListaJogadores(ListaJogadores*,const char*, int);
+
+int verificarFimJogo(ListaJogadores*);
+void verificarVencedor(ListaJogadores*);

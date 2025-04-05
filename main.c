@@ -10,22 +10,22 @@ void seeds(ListaJogadores*, int);
 int main(){
     ListaJogadores* lista = criarListaJogadores();
 
-    int qnt, cor;
-    printf("Quantos jogadores participarao?\n");
+    int qnt, cor, fim;
+    printf("Quantos jogadores participarao? ");
     scanf("%i", &qnt);
 
     seeds(lista, qnt);
+    imprimirListaJogadores(lista);
+    removerDinheiroListaJogadores(lista, "vermelho", 5);
+    adicinarDinheiroListaJogadores(lista, "verde", 10);
+    removerTapeteListaJogadores(lista, "amarelo", 10);
+    removerTapeteListaJogadores(lista, "vermelho", 10);
+    imprimirListaJogadores(lista);
+    fim = verificarFimJogo(lista);
 
-    printf("qtd inicial: %d \n", tamanhoListaJogadores(lista));
-    int success = removerMeioListaJogadores(lista, "vermelho");
-
-        if(success){
-            printf("sucesso remover\n");
-        }
-        else{
-            printf("error remover\n");
-        }
-        printf("qtd final: %d \n", tamanhoListaJogadores(lista));
+    if(fim){
+        verificarVencedor(lista);
+    }
     return 0;
 }
 
@@ -39,14 +39,6 @@ void seeds(ListaJogadores *lc, int qtd){
         novo.dinheiro = 10;
 
         snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
-        success = inserirFimListaJogadores(lc ,novo);
-
-        if(success){
-            printf("sucesso insert: %d \n", i);
-        }
-        else{
-            printf("error insert: %d", i);
-        }
+        inserirFimListaJogadores(lc ,novo);
     }
-    printf("Jogaodres inseridos! \n");
 }
