@@ -7,7 +7,7 @@
 
 void seeds(ListaJogadores*, int);
 
-int main(){
+int main_de_otavio(){
     ListaJogadores* lista = criarListaJogadores();
 
     int qnt, cor, fim;
