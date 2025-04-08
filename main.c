@@ -5,7 +5,6 @@
 #include "tabuleiro.h"
 #include "jogadores.h"
 
-<<<<<<< HEAD
 void seeds(ListaJogadores*, int);
 
 int main_de_otavio(){
@@ -27,7 +26,6 @@ int main_de_otavio(){
     if(fim){
         verificarVencedor(lista);
     }
-=======
 int mainKayky(){
     srand(time(NULL));
     int qnt, cor;
@@ -40,7 +38,6 @@ int mainKayky(){
     do{
 
     }while(0);
->>>>>>> feature/kayky
     return 0;
 }
 
