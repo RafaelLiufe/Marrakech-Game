@@ -14,15 +14,11 @@ struct jogador{
     int dinheiro;
     char cor[10];
     int quantidade;
+    struct jogador *proximo;
+    struct jogador *anterior;
 };
 
 typedef struct jogador jogador;
-
-struct lista{//lista estática dos jogadores
-    jogador players[5];
-    int n;
-};
-
 
 int dado(){
     int n = 1 + rand()%(6);
@@ -48,32 +44,14 @@ struct espaco {
     struct espaco* sul;
     struct espaco* leste;
     struct espaco* oeste;
+    int linha;
+    int coluna;
 };
 struct tap {
-    struct tdata* dados;
+    char cor[10];
     struct tap* prox;
     struct tap* outro;
 };
-struct tdata {
-    char jogador[10];
-};
-Jogadores* listaJogadores(int n){
-    struct lista* aux = (Jogadores)malloc(sizeof(struct lista));
-    aux->n = n;
-    Jogadores *Lista = (Jogadores*)malloc(sizeof(Jogadores));
-    Lista = &aux;
-    return Lista;
-}
-int setPlayer(Jogadores* lista, int n, int cor){
-    if(lista == NULL || *lista == NULL)
-        return 0;
-    char cores[5][10] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
-    (*lista)->players[n].dinheiro = 50;
-    (*lista)->players[n].quantidade = 10;
-    strcpy((*lista)->players[n].cor, cores[cor-1]);
-    printf("%i, %i", (*lista)->players[n].dinheiro, (*lista)->players[n].quantidade);
-    return 1;
-}
 Assam* criarAssam(){
     Assam *piece;
     piece = (Assam*)malloc(sizeof(Assam));
@@ -100,8 +78,8 @@ int empilha(Pilha *p1, Pilha *p2, char playerColor[10]){
     struct tap *novoTapete2 = (struct tap*)malloc(sizeof(struct tap));
     if(novoTapete1 == NULL || novoTapete2 == NULL)
         return 0;
-    strcpy(novoTapete1->dados->jogador, playerColor);
-    strcpy(novoTapete2->dados->jogador, playerColor);
+    strcpy(novoTapete1->cor, playerColor);
+    strcpy(novoTapete2->cor, playerColor);
     novoTapete1->outro = novoTapete2;
     novoTapete2->outro = novoTapete1;
     novoTapete1->prox = *p1;
@@ -110,6 +88,7 @@ int empilha(Pilha *p1, Pilha *p2, char playerColor[10]){
     *p2 = novoTapete2;
     return 1;
 }
+
 Tabuleiro* criarTabuleiro(Assam *piece) {
     Tabuleiro* table = (Tabuleiro*)malloc(sizeof(Tabuleiro));
     if (table != NULL) {
@@ -118,24 +97,30 @@ Tabuleiro* criarTabuleiro(Assam *piece) {
     *table = (Espaco*)malloc(sizeof(Espaco));
     Espaco* aux = *table;
     aux->tapetes = criarP();
+    aux->linha = 0;
+    aux->coluna = 0;
     for (int i = 1; i < TAM; i++) {
         aux->sul = (Espaco*)malloc(sizeof(Espaco));
         aux->sul->norte = aux;
         aux = aux->sul;
         aux->tapetes = criarP();
+        aux->linha = i;
+        aux->coluna = 0;
     }
     aux->sul = NULL;
     Espaco* ref = *table;
-    for (int i = 1; i < TAM; i++) {
+    for (int i = 1; i <= TAM; i++) {
         aux = ref;
         for (int j = 1; j < TAM; j++) {
-            aux->leste = (Espaco*)malloc(sizeof(Espaco));
-            aux->leste->oeste = aux;
             if(i== (TAM/2) && j == (TAM/2)){
                 Assam auxPiece = *piece;
                 auxPiece->posicao = aux;
             }
+            aux->leste = (Espaco*)malloc(sizeof(Espaco));
+            aux->leste->oeste = aux;
             aux = aux->leste;
+            aux->linha = i - 1;
+            aux->coluna = j;
             aux->tapetes = criarP();
         }
         aux->leste = NULL;
@@ -157,83 +142,6 @@ Tabuleiro* criarTabuleiro(Assam *piece) {
             aux2 = aux2->sul;
         }
     }
-    /*experimental
-    ref = *table;
-    int cont = 0;
-    while (ref != NULL) {
-        if (ref->leste == NULL && cont == 0) {
-            ref->norte = ref;
-            ref = ref->leste;
-        } else if (cont == 0) {
-            ref->norte = ref->leste;
-            ref = ref->leste;
-            cont++;
-        } else if (cont == 1) {
-            ref->norte = ref->oeste;
-            ref = ref->leste;
-            cont--;
-        }
-    }
-    ref = *table;
-    cont = 0;
-    while (ref != NULL) {
-        if (ref->sul == NULL && cont == 0) {
-            ref->oeste = ref;
-            ref = ref->sul;
-        } else if (cont == 0) {
-            ref->oeste = ref->sul;
-            ref = ref->sul;
-            cont++;
-        } else if (cont == 1) {
-            ref->oeste = ref->norte;
-            ref = ref->sul;
-            cont--;
-        }
-    }
-    ref = *table;
-    cont = 0;
-    while (ref->leste != NULL) {
-        ref = ref->leste;
-    }
-    if (ref->norte == ref) {
-        ref->leste = ref;
-        ref = ref->sul;
-    }
-    while (ref != NULL) {
-        if (cont == 0) {
-            ref->leste = ref->sul;
-            ref = ref->sul;
-            cont++;
-        } else if (cont == 1) {
-            ref->leste = (Espaco*)malloc(sizeof(Espaco)); //CORRIGIR DEPOIS
-            ref->leste = ref->norte;
-            ref = ref->sul;
-            cont--;
-        }
-    }
-    free(ref);
-    ref = (Espaco*)malloc(sizeof(Espaco));
-    ref = *table; //HÁ ERRO AQUI
-    printf("teste\n");
-    cont = 0;
-    while (ref->sul != NULL) {
-        ref = ref->sul;
-    }
-    if (ref->oeste == ref) {
-        ref->sul = ref;
-        ref = ref->leste;
-    }
-    do {
-        if (cont == 0) {
-            ref->sul = ref->oeste;
-            ref = ref->oeste;
-            cont++;
-        } else if (cont == 1) {
-            ref->sul = ref->oeste;
-            ref = ref->leste;
-            cont--;
-        }
-    } while (ref->oeste != ref);*/
 
     return table;
 }
@@ -315,20 +223,20 @@ int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *l
     if((*aux1->tapetes)->outro == (*aux2->tapetes)){//há um tapete completo por cima
         return 0;
     }
-    if(empilha(aux1->tapetes, aux2->tapetes, (*lista_de_jogadores)->players[player].cor)){
-        (*lista_de_jogadores)->players[player].quantidade--;
+    if(empilha(aux1->tapetes, aux2->tapetes, "vermelho")){
+        //(*lista_de_jogadores)->players[player].quantidade--;
         return 1;
     }else return 0;
 }
 int descontarValor(Assam *piece, Jogadores *lista_jogadores, int player){
     Assam auxPiece = *piece;
-    if(strcmp((*auxPiece->posicao->tapetes)->dados->jogador, (*lista_jogadores)->players[player].cor)!=0){
+    if(strcmp((*auxPiece->posicao->tapetes)->cor, "vermelho")!=0){
         //criar nó descritor com o tamanho da pilha ou implementar algoritmo de busca que retorna a área de um determinado trapete
         return 1;
     }
     return 0;
 }
-int checarJogador(Jogadores *lista_jogadores, int player){
+/*int checarJogador(Jogadores *lista_jogadores, int player){
     if((*lista_jogadores)->players[player].dinheiro <= 0){
        struct lista *aux = *lista_jogadores;
        if(player != aux->n){
@@ -340,4 +248,33 @@ int checarJogador(Jogadores *lista_jogadores, int player){
        return 1;
     }
     return 0;
+}*/
+int BuscaProfunda(Espaco *casa, int **visitado, char color[10]) {
+    if (visitado[casa->linha][casa->coluna] || *casa->tapetes == NULL || strcmp((*casa->tapetes)->cor, color)!=0)
+        return 0;
+
+    visitado[casa->linha][casa->coluna] = 1;
+
+    int size = 1;
+
+    if(casa->coluna!=0)
+        size += BuscaProfunda(casa->oeste, visitado, color);//oeste
+    if(casa->coluna!=TAM)
+        size += BuscaProfunda(casa->leste, visitado, color);//leste
+    if(casa->linha!=0)
+        size += BuscaProfunda(casa->norte, visitado, color);//norte
+    if(casa->linha!=TAM)
+        size += BuscaProfunda(casa->sul, visitado, color);//sul
+
+    return size;
+}
+
+int AreaDoTapete(Espaco *casa, char color[10]) {
+    int **visitado = (int**)malloc(sizeof(int*)*TAM);
+    for(int i=0;i<TAM;i++)
+        visitado[i] = (int*)malloc(sizeof(int)*TAM);
+    for(int i=0;i<TAM;i++)
+        for(int j=0;j<TAM;j++)
+            visitado[i][j] = 0;
+    return BuscaProfunda(casa, visitado, color);
 }
