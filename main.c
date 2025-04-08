@@ -26,7 +26,8 @@ int main_de_otavio(){
     if(fim){
         verificarVencedor(lista);
     }
-int mainKayky(){
+}
+int main(){
     srand(time(NULL));
     int qnt, cor;
     printf("Quantos jogadores participar�o?\n");
