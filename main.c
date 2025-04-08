@@ -3,32 +3,42 @@
 #include "jogo.h"
 #include <time.h>
 #include "tabuleiro.h"
+#include "jogadores.h"
 
-int main(){
-    srand(time(NULL));
-    int qnt, cor;
-    printf("Quantos jogadores participar�o?\n");
+void seeds(ListaJogadores*, int);
+
+int main_de_otavio(){
+    ListaJogadores* lista = criarListaJogadores();
+
+    int qnt, cor, fim;
+    printf("Quantos jogadores participarao? ");
     scanf("%i", &qnt);
-    Jogadores *lista_jogadores = listaJogadores(qnt);
-    system("cls");
-    printf("Cores dispon�veis:\n1.vermelho\n2.amarelo\n3.verde\n4.azul\n5.roxo\n");
-    for(int i=0;i<qnt;i++){
-        printf("Jogador %i, qual cor voc� escolhe?\n", i+1);
-        scanf("%i", &cor);
-        if(!setPlayer(lista_jogadores, i, cor)){
-            printf("ERRO\n");
-            return 0;
-        }
+
+    seeds(lista, qnt);
+    imprimirListaJogadores(lista);
+    removerDinheiroListaJogadores(lista, "vermelho", 5);
+    adicinarDinheiroListaJogadores(lista, "verde", 10);
+    removerTapeteListaJogadores(lista, "amarelo", 10);
+    removerTapeteListaJogadores(lista, "vermelho", 10);
+    imprimirListaJogadores(lista);
+    fim = verificarFimJogo(lista);
+
+    if(fim){
+        verificarVencedor(lista);
     }
-    system("cls");
-    Assam *piece = criarAssam();
-    Tabuleiro *board = criarTabuleiro(piece);
-    do{
-
-    }while(0);
-
-    Tabuleiro* table = criarT();
-
     return 0;
 }
 
+void seeds(ListaJogadores *lc, int qtd){
+    struct jogador novo;
+    int success;
+    const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
+
+    for(int i = 0; i < qtd; i++){
+        novo.quantidadeTapetes = 10;
+        novo.dinheiro = 10;
+
+        snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
+        inserirFimListaJogadores(lc ,novo);
+    }
+}
