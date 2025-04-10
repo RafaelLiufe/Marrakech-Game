@@ -3,6 +3,11 @@
 #include <string.h>
 #include <windows.h>
 #include "tabuleiro.h"
+#include "jogo.h"
+struct assam{
+    int orientacao;//0 norte, 1 leste, 2 sul, 3 oeste;
+    Espaco* posicao;//ponteiro pro tabuleiro;
+};
 struct espaco {
     Pilha* tapetes;
     struct espaco* norte;
@@ -25,7 +30,7 @@ Pilha* criarPilha() {
     }
     return p;
 }
-void empilha(Pilha* p1, Pilha* p2, char* cor) {
+int empilha(Pilha* p1, Pilha* p2, char* cor) {
     if (p1 != NULL || p2 != NULL) {
         Tap* e1 = (Tap*)malloc(sizeof(Tap));
         strcpy(e1->cor, cor);
@@ -37,6 +42,9 @@ void empilha(Pilha* p1, Pilha* p2, char* cor) {
         *p1 = e1;
         e2->prox = *p2;
         *p2 = e2;
+        return 1;
+    } else {
+        return 0;
     }
 }
 Espaco* retEspaco(Tabuleiro* tab, int m, int n) {
@@ -210,10 +218,10 @@ void printTable(Tabuleiro* tab, Assam* ass) {
                 }
                 printf("■ ");
                 SetConsoleTextAttribute(hConsole, 7);
-            } else if (ass->posicao == aux) {
+            } else if ((*ass)->posicao == aux) {
                 printf("| ");
                 SetConsoleTextAttribute(hConsole, 3);
-                switch (ass->orientacao) {
+                switch ((*ass)->orientacao) {
                 case 0:
                     printf("▲ ");
                     break;
@@ -247,19 +255,19 @@ void printTable(Tabuleiro* tab, Assam* ass) {
 }
 void rotacionarAssamHor(Assam* ass) {
     if (ass != NULL) {
-        if (ass->orientacao != 3) {
-            ass->orientacao += 1;
+        if ((*ass)->orientacao != 3) {
+            (*ass)->orientacao += 1;
         } else {
-            ass->orientacao = 0;
+            (*ass)->orientacao = 0;
         }
     }
 }
 void rotacionarAssamAntiHor(Assam* ass) {
-    if (ass != NULL) {
-        if (ass->orientacao != 0) {
-            ass->orientacao -= 1;
+    if (*ass != NULL) {
+        if ((*ass)->orientacao != 0) {
+            (*ass)->orientacao -= 1;
         } else {
-            ass->orientacao = 3;
+            (*ass)->orientacao = 3;
         }
     }
 }

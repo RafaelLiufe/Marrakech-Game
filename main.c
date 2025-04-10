@@ -4,18 +4,17 @@
 #include "jogo.h"
 #include <time.h>
 #include "tabuleiro.h"
+#include "jogo.h"
 #include "jogadores.h"
 
-int main_de_Rafael() {
+int main() {
     system("chcp 65001");
     system("cls");
     Tabuleiro* tab = criarT();
-    Assam* ass = (Assam*)malloc(sizeof(Assam));
-    ass->orientacao = 0;
-    ass->posicao = retEspaco(tab, TAM/2, TAM/2);
+    Assam* ass = criarAssam();
+    setPosAssam(ass, retEspaco(tab, TAM/2, TAM/2));
     empilha(retPilha(retEspaco(tab, 0, 0)), retPilha(retEspaco(tab, 1, 0)), "azul");
     empilha(retPilha(retEspaco(tab, 4, 2)), retPilha(retEspaco(tab, 4, 3)), "vermelho");
-    rotacionarAssamHor(ass);
     printTable(tab, ass);
 }
 void seeds(ListaJogadores*, int);
@@ -48,7 +47,7 @@ int mainKayky(){
 
     system("cls");
     Assam *piece = criarAssam();
-    Tabuleiro *board = criarTabuleiro(piece);
+    Tabuleiro *board = criarT();
     do{
 
     }while(0);

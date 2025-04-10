@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "jogo.h"
+#include "tabuleiro.h"
 #include <time.h>
 #include <string.h>
 #include <math.h>
@@ -63,7 +64,9 @@ Assam* criarAssam(){
 
     return piece;
 }
-
+void setPosAssam(Assam* ass, Espaco* pos) {
+    (*ass)->posicao = pos;
+}
 Pilha* criarP() {
     Pilha* p = (Pilha*)malloc(sizeof(Pilha));
     if (p != NULL) {
@@ -71,81 +74,6 @@ Pilha* criarP() {
     }
     return p;
 }
-int empilha(Pilha *p1, Pilha *p2, char playerColor[10]){
-    if(p1==NULL || p2 == NULL)
-        return 0;
-    struct tap *novoTapete1 = (struct tap*)malloc(sizeof(struct tap));
-    struct tap *novoTapete2 = (struct tap*)malloc(sizeof(struct tap));
-    if(novoTapete1 == NULL || novoTapete2 == NULL)
-        return 0;
-    strcpy(novoTapete1->cor, playerColor);
-    strcpy(novoTapete2->cor, playerColor);
-    novoTapete1->outro = novoTapete2;
-    novoTapete2->outro = novoTapete1;
-    novoTapete1->prox = *p1;
-    novoTapete2->prox = *p2;
-    *p1 = novoTapete1;
-    *p2 = novoTapete2;
-    return 1;
-}
-
-Tabuleiro* criarTabuleiro(Assam *piece) {
-    Tabuleiro* table = (Tabuleiro*)malloc(sizeof(Tabuleiro));
-    if (table != NULL) {
-        *table = NULL;
-    }
-    *table = (Espaco*)malloc(sizeof(Espaco));
-    Espaco* aux = *table;
-    aux->tapetes = criarP();
-    aux->linha = 0;
-    aux->coluna = 0;
-    for (int i = 1; i < TAM; i++) {
-        aux->sul = (Espaco*)malloc(sizeof(Espaco));
-        aux->sul->norte = aux;
-        aux = aux->sul;
-        aux->tapetes = criarP();
-        aux->linha = i;
-        aux->coluna = 0;
-    }
-    aux->sul = NULL;
-    Espaco* ref = *table;
-    for (int i = 1; i <= TAM; i++) {
-        aux = ref;
-        for (int j = 1; j < TAM; j++) {
-            if(i== (TAM/2) && j == (TAM/2)){
-                Assam auxPiece = *piece;
-                auxPiece->posicao = aux;
-            }
-            aux->leste = (Espaco*)malloc(sizeof(Espaco));
-            aux->leste->oeste = aux;
-            aux = aux->leste;
-            aux->linha = i - 1;
-            aux->coluna = j;
-            aux->tapetes = criarP();
-        }
-        aux->leste = NULL;
-        ref = ref->sul;
-    }
-    ref = *table;
-    aux = ref->leste;
-    Espaco* ref2;
-    Espaco* aux2;
-    for (int i = 1; i < TAM; i++) {
-        ref2 = ref;
-        aux2 = aux;
-        ref = ref->leste; // Na última apontam a NULL
-        aux = aux->leste;
-        for (int j = 1; j < TAM - 1; j++) {
-            aux2->sul = ref2->sul->leste;
-            aux2->sul->norte = ref2->leste;
-            ref2 = ref2->sul; //na última apontam a NULL
-            aux2 = aux2->sul;
-        }
-    }
-
-    return table;
-}
-
 int moverAssam(Tabuleiro *board, Assam *piece, int n, int dir){
     Assam auxPiece = *piece;
     if(!((dir - auxPiece->orientacao + 4) % 4 == 1 || (dir - auxPiece->orientacao + 4) % 4 == 3))
