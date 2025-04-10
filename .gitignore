@@ -1,0 +1,33 @@
+# Ignorar arquivos de compilação
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+*.out
+*.class
+
+# Ignorar arquivos temporários
+*.swp
+*.swo
+*.tmp
+*.log
+*.bak
+
+# Ignorar arquivos gerados pelo Code::Blocks
+*.layout
+*.depend
+*.cbp.user
+
+# Ignorar diretórios de build
+debug/
+release/
+build/
+
+# Ignorar arquivos de IDEs
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
