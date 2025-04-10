@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 #include "tabuleiro.h"
 struct espaco {
     Pilha* tapetes;
@@ -36,6 +37,27 @@ void empilha(Pilha* p1, Pilha* p2, char* cor) {
         *p1 = e1;
         e2->prox = *p2;
         *p2 = e2;
+    }
+}
+Espaco* retEspaco(Tabuleiro* tab, int m, int n) {
+    if (m > 4 || m < 0 || n > 4 || n < 0) {
+        return NULL;
+    } else {
+        Espaco* aux = *tab;
+        for (int i = 0; i < n; i++) {
+            aux = aux->leste;
+        }
+        for (int i = 0; i < m; i++) {
+            aux = aux->sul;
+        }
+        return aux;
+    }
+}
+Pilha* retPilha(Espaco* esp) {
+    if (esp == NULL) {
+        return NULL;
+    } else {
+        return esp->tapetes;
     }
 }
 Tabuleiro* criarT() {
@@ -160,4 +182,84 @@ Tabuleiro* criarT() {
     }
 
     return table;
+}
+void printTable(Tabuleiro* tab, Assam* ass) {
+    void headLine() {
+        for (int i = 0; i < TAM; i++) {
+            printf("+ - ");
+        }
+        printf("+\n");
+    }
+    void innerLine(Espaco* ref) {
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        Espaco* aux = ref;
+        for (int i = 0; i < TAM; i++) {
+            if (*(aux->tapetes) != NULL) {
+                printf("| ");
+                Tap* tap = *(aux->tapetes);
+                if (strcmp(tap->cor, "vermelho") == 0) {
+                    SetConsoleTextAttribute(hConsole, 4);
+                } else if (strcmp(tap->cor, "amarelo") == 0) {
+                    SetConsoleTextAttribute(hConsole, 6);
+                } else if (strcmp(tap->cor, "verde") == 0) {
+                    SetConsoleTextAttribute(hConsole, 2);
+                } else if (strcmp(tap->cor, "azul") == 0) {
+                    SetConsoleTextAttribute(hConsole, 1);
+                } else {
+                    SetConsoleTextAttribute(hConsole, 5);
+                }
+                printf("■ ");
+                SetConsoleTextAttribute(hConsole, 7);
+            } else if (ass->posicao == aux) {
+                printf("| ");
+                SetConsoleTextAttribute(hConsole, 3);
+                switch (ass->orientacao) {
+                case 0:
+                    printf("▲ ");
+                    break;
+                case 1:
+                    printf("► ");
+                    break;
+                case 2:
+                    printf("▼ ");
+                    break;
+                case 3:
+                    printf("◄ ");
+                    break;
+                }
+                SetConsoleTextAttribute(hConsole, 7);
+            } else {
+                printf("|   ");
+            }
+            aux = aux->leste;
+        }
+        printf("|\n");
+    }
+    if (tab != NULL && *tab != NULL) {
+        headLine();
+        Espaco* ref = *tab;
+        for (int i = 0; i < TAM; i++) {
+            innerLine(ref);
+            headLine();
+            ref = ref->sul;
+        }
+    }
+}
+void rotacionarAssamHor(Assam* ass) {
+    if (ass != NULL) {
+        if (ass->orientacao != 3) {
+            ass->orientacao += 1;
+        } else {
+            ass->orientacao = 0;
+        }
+    }
+}
+void rotacionarAssamAntiHor(Assam* ass) {
+    if (ass != NULL) {
+        if (ass->orientacao != 0) {
+            ass->orientacao -= 1;
+        } else {
+            ass->orientacao = 3;
+        }
+    }
 }
