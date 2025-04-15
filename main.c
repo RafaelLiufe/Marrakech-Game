@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
+#include <linux.h>
 #include "jogo.h"
 #include <time.h>
 #include "tabuleiro.h"
