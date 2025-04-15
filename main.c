@@ -1,11 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 #include "jogo.h"
 #include <time.h>
 #include "tabuleiro.h"
+#include "jogo.h"
 #include "jogadores.h"
 
-<<<<<<< HEAD
+int main() {
+    system("chcp 65001");
+    system("cls");
+    Tabuleiro* tab = criarT();
+    Assam* ass = criarAssam();
+    setPosAssam(ass, retEspaco(tab, TAM/2, TAM/2));
+    empilha(retPilha(retEspaco(tab, 0, 0)), retPilha(retEspaco(tab, 1, 0)), "azul");
+    empilha(retPilha(retEspaco(tab, 4, 2)), retPilha(retEspaco(tab, 4, 3)), "vermelho");
+    printTable(tab, ass);
+}
 void seeds(ListaJogadores*, int);
 
 int main_de_otavio(){
@@ -27,7 +38,7 @@ int main_de_otavio(){
     if(fim){
         verificarVencedor(lista);
     }
-=======
+}
 int mainKayky(){
     srand(time(NULL));
     int qnt, cor;
@@ -36,11 +47,10 @@ int mainKayky(){
 
     system("cls");
     Assam *piece = criarAssam();
-    Tabuleiro *board = criarTabuleiro(piece);
+    Tabuleiro *board = criarT();
     do{
 
     }while(0);
->>>>>>> feature/kayky
     return 0;
 }
 
