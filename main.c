@@ -7,7 +7,7 @@
 
 void seeds(ListaJogadores*, int);
 
-int main_de_otavio(){
+int main(){
     ListaJogadores* lista = criarListaJogadores();
 
     int qnt, cor, fim;
@@ -27,7 +27,7 @@ int main_de_otavio(){
         verificarVencedor(lista);
     }
 }
-int main(){
+int mainKayky(){
     srand(time(NULL));
     int qnt, cor;
     printf("Quantos jogadores participar�o?\n");
