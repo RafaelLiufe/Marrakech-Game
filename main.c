@@ -10,12 +10,42 @@
 int main() {
     system("chcp 65001");
     system("cls");
+
+    int qnt, cor, fim = 0, sentido, dice;
+
+
+    ListaJogadores* lista = criarListaJogadores();
     Tabuleiro* tab = criarT();
-    Assam* ass = criarAssam();
-    setPosAssam(ass, retEspaco(tab, TAM/2, TAM/2));
-    empilha(retPilha(retEspaco(tab, 0, 0)), retPilha(retEspaco(tab, 1, 0)), "azul");
-    empilha(retPilha(retEspaco(tab, 4, 2)), retPilha(retEspaco(tab, 4, 3)), "vermelho");
-    printTable(tab, ass);
+    Assam* pieceAssam = criarAssam();
+    setPosAssam(pieceAssam, retEspaco(tab, TAM/2, TAM/2));
+    //empilha(retPilha(retEspaco(tab, 0, 0)), retPilha(retEspaco(tab, 1, 0)), "azul");
+    //empilha(retPilha(retEspaco(tab, 4, 2)), retPilha(retEspaco(tab, 4, 3)), "vermelho");
+    //printTable(tab, ass);
+
+    printf("Quantos jogadores participarão? ");
+    scanf("%i", &qnt);
+    seeds(lista, qnt);
+
+    while(!fim){
+        imprimirListaJogadores(lista);
+        printTable(tab, pieceAssam);
+        printf("Você deseja girar o Assan em sentido horário(1), anti-horário(2) ou não girar(0)? ");
+        scanf("%i", &sentido);
+        if(sentido){
+            if(sentido == 1)
+                rotacionarAssamHor(pieceAssam);
+            else
+                rotacionarAssamAntiHor(pieceAssam);
+        }
+        printf("Dado girando...\n");
+        Sleep(3000);
+        dice = dado();
+        printf("Caiu %d! Ande as casas\n", dice);
+        system("pause");
+        system("cls");
+    }
+
+    return 0;
 }
 void seeds(ListaJogadores*, int);
 
@@ -60,8 +90,8 @@ void seeds(ListaJogadores *lc, int qtd){
     const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
 
     for(int i = 0; i < qtd; i++){
-        novo.quantidadeTapetes = 10;
-        novo.dinheiro = 10;
+        novo.quantidadeTapetes = 15;
+        novo.dinheiro = 30;
 
         snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
         inserirFimListaJogadores(lc ,novo);
