@@ -18,7 +18,7 @@ int main() {
     printTable(tab, ass);
 }
 void seeds(ListaJogadores*, int);
-
+// MAIN DE OTAVIO
 int main_de_otavio(){
     ListaJogadores* lista = criarListaJogadores();
 
