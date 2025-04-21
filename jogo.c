@@ -74,38 +74,51 @@ Pilha* criarP() {
     }
     return p;
 }
-int moverAssam(Tabuleiro *board, Assam *piece, int n, int dir){
+int moverAssam(Assam *piece, int n){
     Assam auxPiece = *piece;
-    if(!((dir - auxPiece->orientacao + 4) % 4 == 1 || (dir - auxPiece->orientacao + 4) % 4 == 3))
-        return 0;
-
-    switch(dir){
-        case 0:
-            auxPiece->orientacao = dir;
-            for(int j=0;j<n;j++){
+    for(int j=0;j<n;j++){
+        switch(auxPiece->orientacao){
+            case 0:
+                if(auxPiece->posicao->linha == 0){
+                    if(auxPiece->posicao->coluna == TAM - 1 && TAM%2==1){
+                        auxPiece->orientacao = 3;
+                    }else{
+                        auxPiece->orientacao = 2;
+                    }
+                }
                 auxPiece->posicao = auxPiece->posicao->norte;
-            }
-            break;
-        case 1:
-            auxPiece->orientacao = dir;
-            for(int j=0;j<n;j++){
-                auxPiece->posicao = auxPiece->posicao->leste;
-            }
-            break;
-        case 2:
-            auxPiece->orientacao = dir;
-            for(int j=0;j<n;j++){
-                auxPiece->posicao = auxPiece->posicao->sul;
-            }
-            break;
-        case 3:
-            auxPiece->orientacao = dir;
-            for(int j=0;j<n;j++){
-                auxPiece->posicao = auxPiece->posicao->oeste;
-            }
-            break;
-        default:
-            printf("ERRO");
+                break;
+            case 1:
+                if(auxPiece->posicao->coluna == TAM - 1){
+                    if(auxPiece->posicao->linha == 0 && TAM%2==1){
+                        auxPiece->orientacao = 2;
+                    }else{
+                        auxPiece->orientacao = 3;
+                    }
+                }
+                auxPiece->posicao = auxPiece->posicao->norte;
+                break;
+            case 2:
+                if(auxPiece->posicao->linha == TAM - 1){
+                    if(auxPiece->posicao->coluna == 0 && TAM%2==1){
+                        auxPiece->orientacao = 1;
+                    }else{
+                        auxPiece->orientacao = 0;
+                    }
+                }
+                auxPiece->posicao = auxPiece->posicao->norte;
+                break;
+            case 3:
+                if(auxPiece->posicao->coluna == 0){
+                    if(auxPiece->posicao->linha == TAM - 1 && TAM%2==1){
+                        auxPiece->orientacao = 0;
+                    }else{
+                        auxPiece->orientacao = 1;
+                    }
+                }
+                auxPiece->posicao = auxPiece->posicao->norte;
+                break;
+        }
     }
     return 1;
 }
