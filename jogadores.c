@@ -6,7 +6,6 @@
 struct elementoListaJogadores {
     struct jogador dados;
     struct elementoListaJogadores *prox;
-    //struct elementoListaJogadores *ante;
 };
 
 typedef struct elementoListaJogadores ElementoListaJogadores;
@@ -319,4 +318,35 @@ void verificarVencedor(ListaJogadores *lc) {
     }
 }
 
+int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogador *j) {
+    if (vaziaListaJogadores(lc))
+        return 0;
+    else if (strcmp((*lc)->dados.cor, cor) == 0)
+        *j = (*lc)->dados;
+    else {
+        ElementoListaJogadores *aux = *lc;
+        do {
+            aux = aux->prox;
+        } while (aux != *lc && strcmp(aux->dados.cor, cor) != 0);
+
+        if (aux == *lc) return 0;
+        *j = aux->dados;
+    }
+    return 1;
+}
+
+void passarVez(ListaJogadores *lc, struct jogador *j) {
+    if (*lc == NULL || j == NULL) return;
+
+    ElementoListaJogadores *atual = *lc;
+
+    do {
+        if (strcmp(atual->dados.cor, j->cor) == 0) {
+            // Encontrou: o próximo é o jogador da vez
+            *j = atual->prox->dados;
+            return;
+        }
+        atual = atual->prox;
+    } while (atual != *lc);
+}
 

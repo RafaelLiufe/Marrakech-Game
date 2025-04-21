@@ -6,8 +6,8 @@
 #include "jogadores.h"
 
 void seeds(ListaJogadores*, int);
-
-int main(){
+// MAIN DE OTAVIO
+int main_de_otavio(){
     ListaJogadores* lista = criarListaJogadores();
 
     int qnt, cor, fim;
@@ -26,6 +26,25 @@ int main(){
     if(fim){
         verificarVencedor(lista);
     }
+
+//    PARA ACESSAR JOGADOR PELA COR
+
+//    struct jogador *jog;
+//    acessarJogadorPorCor(lista, "amarelo", jog);
+//    printf("jogador: %s", jog->cor);
+
+
+//    PARA PASSAR VEZ DO JOGADOR
+//    struct jogador *jogadorDaVez;
+//    acessarJogadorPorCor(lista, "vermelho", jogadorDaVez);
+//
+//    printf("vez 1: %s \n", jogadorDaVez->cor);
+//
+//    passarVez(lista, jogadorDaVez);
+//    printf("vez 2: %s \n", jogadorDaVez->cor);
+//
+//    passarVez(lista, jogadorDaVez);
+//    printf("vez 3: %s \n", jogadorDaVez->cor);
 }
 int mainKayky(){
     srand(time(NULL));
