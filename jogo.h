@@ -11,5 +11,5 @@ Jogadores* listaJogadores(int);
 int setPlayer(Jogadores*, int, int);
 Assam* criarAssam();
 void setPosAssam(Assam*, Espaco*);
-int moverAssam(Assam*, int);
+int moverAssam(Assam*, int,Tabuleiro*);
 int putTapete(Tabuleiro*, Assam*, int, int, Jogadores*, int);

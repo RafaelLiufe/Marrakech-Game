@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <linux.h>
 #include "jogo.h"
 #include <time.h>
 #include "tabuleiro.h"
@@ -26,10 +25,10 @@ int main() {
     scanf("%i", &qnt);
     seeds(lista, qnt);
 
-    while(!fim){
+    while(1){
         imprimirListaJogadores(lista);
         printTable(tab, pieceAssam);
-        printf("Você deseja girar o Assan em sentido horário(1), anti-horário(2) ou não girar(0)? ");
+        printf("Você deseja girar o Assam? em sentido horário (1), anti-horário (2) ou não girar(0)? ");
         scanf("%i", &sentido);
         if(sentido){
             if(sentido == 1)
@@ -38,9 +37,12 @@ int main() {
                 rotacionarAssamAntiHor(pieceAssam);
         }
         printf("Dado girando...\n");
-        Sleep(3000);
+        //fflush(stdout);
+        //Sleep(3000);
         dice = dado();
         printf("Caiu %d! Ande as casas\n", dice);
+        if(!moverAssam(pieceAssam, dice, tab))
+            printf("não movi!");
         system("pause");
         system("cls");
     }

@@ -11,7 +11,7 @@ struct elementoListaJogadores {
 typedef struct elementoListaJogadores ElementoListaJogadores;
 
 void imprimirListaJogadores(ListaJogadores *lc) {
-    if (lc == NULL || vaziaListaJogadores(lc)) {
+    if (vaziaListaJogadores(lc)) {
         printf("Lista vazia ou nao inicializada!\n");
         return;
     }
@@ -71,7 +71,7 @@ int tamanhoListaJogadores(ListaJogadores *lc) {
 }
 
 int vaziaListaJogadores(ListaJogadores *lc) {
-    if (lc == NULL) {
+    /*if (lc == NULL) {
         return 1;
     }
     else if (*lc == NULL) {
@@ -79,7 +79,8 @@ int vaziaListaJogadores(ListaJogadores *lc) {
     }
     else {
         return 0;
-    }
+    }*/
+    return lc == NULL || *lc == NULL;
 }
 
 int cheiaListaJogadores(ListaJogadores *lc) {

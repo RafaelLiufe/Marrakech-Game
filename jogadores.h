@@ -4,7 +4,7 @@ struct jogador{
     int quantidadeTapetes;
 };
 
-typedef struct elementoListaJogadores *ListaJogadores;
+typedef struct elementoListaJogadores* ListaJogadores;
 
 ListaJogadores* criarListaJogadores();
 void destruirListaJogadores(ListaJogadores*);

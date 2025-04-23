@@ -74,7 +74,7 @@ Pilha* criarP() {
     }
     return p;
 }
-int moverAssam(Assam *piece, int n){
+int moverAssam(Assam *piece, int n, Tabuleiro* tab){
     Assam auxPiece = *piece;
     for(int j=0;j<n;j++){
         switch(auxPiece->orientacao){
@@ -96,7 +96,7 @@ int moverAssam(Assam *piece, int n){
                         auxPiece->orientacao = 3;
                     }
                 }
-                auxPiece->posicao = auxPiece->posicao->norte;
+                auxPiece->posicao = auxPiece->posicao->leste;
                 break;
             case 2:
                 if(auxPiece->posicao->linha == TAM - 1){
@@ -106,7 +106,7 @@ int moverAssam(Assam *piece, int n){
                         auxPiece->orientacao = 0;
                     }
                 }
-                auxPiece->posicao = auxPiece->posicao->norte;
+                auxPiece->posicao = auxPiece->posicao->sul;
                 break;
             case 3:
                 if(auxPiece->posicao->coluna == 0){
@@ -116,7 +116,7 @@ int moverAssam(Assam *piece, int n){
                         auxPiece->orientacao = 1;
                     }
                 }
-                auxPiece->posicao = auxPiece->posicao->norte;
+                auxPiece->posicao = auxPiece->posicao->oeste;
                 break;
         }
     }
