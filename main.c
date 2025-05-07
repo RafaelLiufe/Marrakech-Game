@@ -1,34 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 #include "jogo.h"
 #include <time.h>
 #include "tabuleiro.h"
-#include "jogo.h"
 #include "jogadores.h"
 
 int main() {
     system("chcp 65001");
     system("cls");
 
-    int qnt, cor, fim = 0, sentido, dice;
+    int qnt, cor, fim = 0, sentido, dice, vez = 0, tap1, tap2;
 
 
     ListaJogadores* lista = criarListaJogadores();
     Tabuleiro* tab = criarT();
     Assam* pieceAssam = criarAssam();
     setPosAssam(pieceAssam, retEspaco(tab, TAM/2, TAM/2));
-    //empilha(retPilha(retEspaco(tab, 0, 0)), retPilha(retEspaco(tab, 1, 0)), "azul");
-    //empilha(retPilha(retEspaco(tab, 4, 2)), retPilha(retEspaco(tab, 4, 3)), "vermelho");
-    //printTable(tab, ass);
+
+    printInicio();
+    printf("\n       ");
+    system("pause");
+    system("cls");
 
     printf("Quantos jogadores participarão? ");
     scanf("%i", &qnt);
     seeds(lista, qnt);
+    system("cls");
 
-    while(1){
-        imprimirListaJogadores(lista);
-        printTable(tab, pieceAssam);
-        printf("Você deseja girar o Assam? em sentido horário (1), anti-horário (2) ou não girar(0)? ");
+    while(!fim){
+        printState(pieceAssam, tab, lista, vez);
+        printf("Você deseja girar o Assam em sentido horário (1), anti-horário (2) ou não girar(0)? ");
         scanf("%i", &sentido);
         if(sentido){
             if(sentido == 1)
@@ -36,22 +38,41 @@ int main() {
             else
                 rotacionarAssamAntiHor(pieceAssam);
         }
+        system("cls");
+        printState(pieceAssam, tab, lista, vez);
         printf("Dado girando...\n");
-        //fflush(stdout);
-        //Sleep(3000);
         dice = dado();
         printf("Caiu %d! Ande as casas\n", dice);
-        if(!moverAssam(pieceAssam, dice, tab))
-            printf("não movi!");
+        system("pause");
+        for (int i = 1; i <= dice; i++) {
+            system("cls");
+            if(!moverAssam(pieceAssam, 1, tab)) printf("não movi!");
+            printState(pieceAssam, tab, lista, vez);
+            Sleep(500);
+        }
+        printf("Onde deseja colocar um tapete? Digite dois números: Norte(0), Leste(1), Sul(2), Oeste(3)");
+        scanf("%d", &tap1);
+        scanf("%d", &tap2);
+        fflush(stdin);
+        putTapete(tab, pieceAssam, tap1, tap2, lista, vez);
+        system("cls");
+        printState(pieceAssam, tab, lista, vez);
+        printf("\t\t    ");
         system("pause");
         system("cls");
+
+        if (vez != qnt) {
+            vez++;
+        } else {
+            vez = 0;
+        }
     }
 
     return 0;
 }
-void seeds(ListaJogadores*, int);
+//void seeds(ListaJogadores*, int);
 // MAIN DE OTAVIO
-int main_de_otavio(){
+/*int main_de_otavio(){
     ListaJogadores* lista = criarListaJogadores();
 
     int qnt, cor, fim;
@@ -70,7 +91,7 @@ int main_de_otavio(){
     if(fim){
         verificarVencedor(lista);
     }
-}
+}*/
 int mainKayky(){
     srand(time(NULL));
     int qnt, cor;
@@ -87,7 +108,7 @@ int mainKayky(){
 }
 
 void seeds(ListaJogadores *lc, int qtd){
-    struct jogador novo;
+    struct jogadorOf novo;
     int success;
     const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
 
@@ -98,4 +119,9 @@ void seeds(ListaJogadores *lc, int qtd){
         snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
         inserirFimListaJogadores(lc ,novo);
     }
+}
+void printState(Assam* pieceAssam, Tabuleiro* tab, ListaJogadores* lista, int vez) {
+    printVez(vez);
+    imprimirListaJogadores(lista);
+    printTable(tab, pieceAssam);
 }

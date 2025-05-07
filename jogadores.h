@@ -1,9 +1,8 @@
-struct jogador{
+struct jogadorOf{
     int dinheiro;
     char cor[10];
     int quantidadeTapetes;
 };
-
 typedef struct elementoListaJogadores* ListaJogadores;
 
 ListaJogadores* criarListaJogadores();
@@ -11,7 +10,7 @@ void destruirListaJogadores(ListaJogadores*);
 int tamanhoListaJogadores(ListaJogadores*);
 int vaziaListaJogadores(ListaJogadores*);
 int cheiaListaJogadores(ListaJogadores*);
-int inserirFimListaJogadores(ListaJogadores*, struct jogador);
+int inserirFimListaJogadores(ListaJogadores*, struct jogadorOf);
 int removerMeioListaJogadores(ListaJogadores*,const char*);
 void imprimirListaJogadores(ListaJogadores*);
 
@@ -22,5 +21,5 @@ int removerTapeteListaJogadores(ListaJogadores*,const char*, int);
 int verificarFimJogo(ListaJogadores*);
 void verificarVencedor(ListaJogadores*);
 
-int acessarJogadorPorCor(ListaJogadores*, const char* , struct jogador*);
-void passarVez(ListaJogadores*, struct jogador*);
+int acessarJogadorPorCor(ListaJogadores*, const char* , struct jogadorOf*);
+void passarVez(ListaJogadores*, struct jogadorOf*);

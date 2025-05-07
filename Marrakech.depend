@@ -1,13 +1,13 @@
 # depslib dependency file v1.0
 0 <<<<<<< HEAD
 
-1745428720 source:c:\users\rafael\documents\marrakech-game\main.c
+1746576170 source:c:\users\rafael\documents\marrakech-game\main.c
 	<stdio.h>
 	<stdlib.h>
+	<windows.h>
 	"jogo.h"
 	<time.h>
 	"tabuleiro.h"
-	"jogo.h"
 	"jogadores.h"
 
 1743515486 source:c:\users\kaike\desktop\algoritmos\marrakech-game\main.c
@@ -35,7 +35,7 @@
 
 1745427390 c:\users\rafael\documents\marrakech-game\tabuleiro.h
 
-1745428584 source:c:\users\rafael\documents\marrakech-game\tabuleiro.c
+1746576261 source:c:\users\rafael\documents\marrakech-game\tabuleiro.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -50,23 +50,26 @@
 
 1743513528 c:\users\kaike\desktop\algoritmos\marrakech-game\tabuleiro.h
 
-1745428694 source:c:\users\rafael\documents\marrakech-game\jogo.c
+1746576365 source:c:\users\rafael\documents\marrakech-game\jogo.c
 	<stdio.h>
 	<stdlib.h>
+	<windows.h>
 	"jogo.h"
 	"tabuleiro.h"
+	"jogadores.h"
 	<time.h>
 	<string.h>
 	<math.h>
 
-1745427997 c:\users\rafael\documents\marrakech-game\jogo.h
+1746573626 c:\users\rafael\documents\marrakech-game\jogo.h
 	"tabuleiro.h"
 
-1745426246 source:c:\users\rafael\documents\marrakech-game\jogadores.c
+1746570490 source:c:\users\rafael\documents\marrakech-game\jogadores.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<windows.h>
 	"jogadores.h"
 
-1745426691 c:\users\rafael\documents\marrakech-game\jogadores.h
+1746570483 c:\users\rafael\documents\marrakech-game\jogadores.h
 

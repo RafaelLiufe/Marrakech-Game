@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 #include "jogadores.h"
-
 struct elementoListaJogadores {
-    struct jogador dados;
+    struct jogadorOf dados;
     struct elementoListaJogadores *prox;
 };
 
 typedef struct elementoListaJogadores ElementoListaJogadores;
 
 void imprimirListaJogadores(ListaJogadores *lc) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
     if (vaziaListaJogadores(lc)) {
         printf("Lista vazia ou nao inicializada!\n");
         return;
@@ -18,15 +20,42 @@ void imprimirListaJogadores(ListaJogadores *lc) {
 
     ElementoListaJogadores *inicio = *lc;
     ElementoListaJogadores *aux = inicio;
+    int cor;
 
-    printf("+-----------+--------+----------+\n");
-    printf("|    Cor    | Caixa  | Tapetes  |\n");
-    printf("+-----------+--------+----------+\n");
+    printf("\t\t\t+-----------+--------+----------+\n");
+    printf("\t\t\t|    Cor    | Caixa  | Tapetes  |\n");
+    printf("\t\t\t+-----------+--------+----------+\n");
     do {
-        printf("| %-9s | %-6d | %-8d |\n", aux->dados.cor, aux->dados.dinheiro, aux->dados.quantidadeTapetes);
+        printf("\t\t\t");
+        if (strcmp(aux->dados.cor, "vermelho") == 0) {
+            cor = 4;
+        } else if (strcmp(aux->dados.cor, "amarelo") == 0) {
+            cor = 6;
+        } else if (strcmp(aux->dados.cor, "verde") == 0) {
+            cor = 2;
+        } else if (strcmp(aux->dados.cor, "azul") == 0) {
+            cor = 1;
+        } else {
+            cor = 5;
+        }
+
+        printf("| ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("%-9s", aux->dados.cor);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf(" | ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("%-6d", aux->dados.dinheiro);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf(" | ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("%-8d", aux->dados.quantidadeTapetes);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf(" |\n");
+        //printf(" | %-6d | %-8d |\n", aux->dados.dinheiro, aux->dados.quantidadeTapetes);
         aux = aux->prox;
     } while (aux != inicio);
-    printf("+-----------+--------+----------+\n");
+    printf("\t\t\t+-----------+--------+----------+\n");
 }
 
 ListaJogadores* criarListaJogadores() {
@@ -87,7 +116,7 @@ int cheiaListaJogadores(ListaJogadores *lc) {
     return 0;
 }
 
-int inserirFimListaJogadores(ListaJogadores *lc, struct jogador novosdados) {
+int inserirFimListaJogadores(ListaJogadores *lc, struct jogadorOf novosdados) {
     if (lc == NULL) {
         return 0;
     }
@@ -319,7 +348,7 @@ void verificarVencedor(ListaJogadores *lc) {
     }
 }
 
-int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogador *j) {
+int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogadorOf *j) {
     if (vaziaListaJogadores(lc))
         return 0;
     else if (strcmp((*lc)->dados.cor, cor) == 0)
@@ -336,7 +365,7 @@ int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogador *j)
     return 1;
 }
 
-void passarVez(ListaJogadores *lc, struct jogador *j) {
+void passarVez(ListaJogadores *lc, struct jogadorOf *j) {
     if (*lc == NULL || j == NULL) return;
 
     ElementoListaJogadores *atual = *lc;

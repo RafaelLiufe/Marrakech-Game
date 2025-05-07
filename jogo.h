@@ -13,3 +13,6 @@ Assam* criarAssam();
 void setPosAssam(Assam*, Espaco*);
 int moverAssam(Assam*, int,Tabuleiro*);
 int putTapete(Tabuleiro*, Assam*, int, int, Jogadores*, int);
+void printInicio();
+void printVez(int);
+//void printState(Assam*, ListaJogadores*, int, Tabuleiro*);

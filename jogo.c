@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 #include "jogo.h"
 #include "tabuleiro.h"
+#include "jogadores.h"
 #include <time.h>
 #include <string.h>
 #include <math.h>
@@ -22,21 +24,11 @@ struct jogador{
 typedef struct jogador jogador;
 
 int dado(){
+    srand(clock());
+
     int n = 1 + rand()%(6);
-    switch(n){
-    case 1:
-        return 1;
-    case 2:
-    case 5:
-        return 2;
-    case 4:
-    case 3:
-        return 3;
-    case 6:
-        return 4;
-    default:
-        return 1;
-    }
+
+    return n;
 }
 
 struct espaco {
@@ -122,9 +114,10 @@ int moverAssam(Assam *piece, int n, Tabuleiro* tab){
     }
     return 1;
 }
-int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *lista_de_jogadores, int player){
+int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *lista_de_jogadores, int vez){
     Espaco *aux1, *aux2;
     Assam auxPiece = *piece;
+    char player[10];
     if((casa2 - casa1 + 4) % 4 == 2)
         return 0;
     switch(casa1){
@@ -161,18 +154,34 @@ int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *l
             printf("ERRO");
             return 0;
     }
-    if((*aux1->tapetes)->outro == (*aux2->tapetes)){//há um tapete completo por cima
-        return 0;
+    if ((*aux1->tapetes) != NULL && (*aux2->tapetes) != NULL) {
+        if((*aux1->tapetes)->outro == (*aux2->tapetes)){//hÃ¡ um tapete completo por cima
+            return 0;
+        }
     }
-    if(empilha(aux1->tapetes, aux2->tapetes, "vermelho")){
-        //(*lista_de_jogadores)->players[player].quantidade--;
-        return 1;
-    }else return 0;
+    switch (vez) {
+    case 0:
+        strcpy(player, "vermelho");
+        break;
+    case 1:
+        strcpy(player, "amarelo");
+        break;
+    case 2:
+        strcpy(player, "verde");
+        break;
+    case 3:
+        strcpy(player, "azul");
+        break;
+    case 4:
+        strcpy(player, "roxo");
+        break;
+    }
+    return empilha(aux1->tapetes, aux2->tapetes, player);
 }
 int descontarValor(Assam *piece, Jogadores *lista_jogadores, int player){
     Assam auxPiece = *piece;
     if(strcmp((*auxPiece->posicao->tapetes)->cor, "vermelho")!=0){
-        //criar nó descritor com o tamanho da pilha ou implementar algoritmo de busca que retorna a área de um determinado trapete
+        //criar nÃ³ descritor com o tamanho da pilha ou implementar algoritmo de busca que retorna a Ã¡rea de um determinado trapete
         return 1;
     }
     return 0;
@@ -219,3 +228,60 @@ int AreaDoTapete(Espaco *casa, char color[10]) {
             visitado[i][j] = 0;
     return BuscaProfunda(casa, visitado, color);
 }
+
+void printInicio() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    SetConsoleTextAttribute(hConsole, 4);
+    printf(" __  __                            _                _\n");
+    printf("|  \\/  |                          | |              | |\n");
+    printf("| \\  / |  __ _  _ __  _ __   __ _ | | __  ___  ___ | |__\n");
+    printf("| |\\/| | / _` || '__|| '__| / _` || |/ / / _ \\/ __|| '_ \\\n");
+    printf("| |  | || (_| || |   | |   | (_| ||   < |  __/\\__ \\| | | |\n");
+    printf("|_|  |_| \\__,_||_|   |_|    \\__,_||_|\\_\\ \\___||___/|_| |_|\n");
+    SetConsoleTextAttribute(hConsole, 5);
+    printf("\t      _____\n");
+    printf("\t     / ____|\n");
+    printf("\t    | |  __   __ _  _ __ ___    ___\n");
+    printf("\t    | | |_ | / _` || '_ ` _ \\  / _ \\\n");
+    printf("\t    | |__| || (_| || | | | | ||  __/\n");
+    printf("\t     \\_____| \\__,_||_| |_| |_| \\___|\n");
+    SetConsoleTextAttribute(hConsole, 7);
+
+}
+void printVez(int vez) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    printf("\t\t\t     ");
+    printf("Vez do jogador ");
+    switch (vez) {
+    case 0:
+        SetConsoleTextAttribute(hConsole, 4);
+        printf("vermelho\n");
+        break;
+    case 1:
+        SetConsoleTextAttribute(hConsole, 6);
+        printf("amarelo\n");
+        break;
+    case 2:
+        SetConsoleTextAttribute(hConsole, 2);
+        printf("verde\n");
+        break;
+    case 3:
+        SetConsoleTextAttribute(hConsole, 1);
+        printf("azul\n");
+        break;
+    case 4:
+        SetConsoleTextAttribute(hConsole, 5);
+        printf("roxo\n");
+        break;
+    }
+    SetConsoleTextAttribute(hConsole, 7);
+}
+/*
+void printState(Assam* pieceAssam,  ListaJogadores* lista, int vez, Tabuleiro* tab) {
+    printVez(vez);
+    imprimirListaJogadores(lista);
+    printTable(tab, pieceAssam);
+}
+*/
