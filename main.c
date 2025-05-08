@@ -6,12 +6,13 @@
 #include "tabuleiro.h"
 #include "jogadores.h"
 
+void printState(Assam*, Tabuleiro*, ListaJogadores*, struct jogadorOf *);
 int main() {
     system("chcp 65001");
     system("cls");
 
     int qnt, cor, fim = 0, sentido, dice, vez = 0, tap1, tap2;
-
+    struct jogadorOf *jogadorVez;
 
     ListaJogadores* lista = criarListaJogadores();
     Tabuleiro* tab = criarT();
@@ -28,8 +29,11 @@ int main() {
     seeds(lista, qnt);
     system("cls");
 
+    acessarJogadorPorCor(lista, "vermelho", jogadorVez);
+
     while(!fim){
-        printState(pieceAssam, tab, lista, vez);
+        printState(pieceAssam, tab, lista, jogadorVez);
+
         printf("Você deseja girar o Assam em sentido horário (1), anti-horário (2) ou não girar(0)? ");
         scanf("%i", &sentido);
         if(sentido){
@@ -39,89 +43,63 @@ int main() {
                 rotacionarAssamAntiHor(pieceAssam);
         }
         system("cls");
-        printState(pieceAssam, tab, lista, vez);
+        printState(pieceAssam, tab, lista, jogadorVez);
+
         printf("Dado girando...\n");
+        //Sleep(2000);
         dice = dado();
         printf("Caiu %d! Ande as casas\n", dice);
         system("pause");
-        for (int i = 1; i <= dice; i++) {
-            system("cls");
-            if(!moverAssam(pieceAssam, 1, tab)) printf("não movi!");
-            printState(pieceAssam, tab, lista, vez);
-            Sleep(500);
-        }
+        system("cls");
+        moverAssam(pieceAssam, dice, tab);
+        printState(pieceAssam, tab, lista, jogadorVez);
+        updateInfo(lista, jogadorVez, pieceAssam);
+
+        /*for (int i = 0; i < dice-1; i++) {
+            //system("cls");
+            //if(!moverAssam(pieceAssam, 1, tab)) printf("não movi!");
+            //printState(pieceAssam, tab, lista, jogadorVez);
+            //Sleep(500);
+        }*/
         printf("Onde deseja colocar um tapete? Digite dois números: Norte(0), Leste(1), Sul(2), Oeste(3)");
         scanf("%d", &tap1);
         scanf("%d", &tap2);
         fflush(stdin);
-        putTapete(tab, pieceAssam, tap1, tap2, lista, vez);
+        putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez->cor);
+        removerTapeteListaJogadores(lista, jogadorVez->cor, 1);
         system("cls");
-        printState(pieceAssam, tab, lista, vez);
+        printState(pieceAssam, tab, lista, jogadorVez);
         printf("\t\t    ");
         system("pause");
         system("cls");
 
-        if (vez != qnt) {
-            vez++;
-        } else {
-            vez = 0;
-        }
+//        if (vez != qnt - 1) {
+//            vez++;
+//        } else {
+//            vez = 0;
+//        }
+        passarVez(lista, jogadorVez);
+        fim = verificarFimJogo(lista);
     }
 
     return 0;
 }
-//void seeds(ListaJogadores*, int);
-// MAIN DE OTAVIO
-/*int main_de_otavio(){
-    ListaJogadores* lista = criarListaJogadores();
-
-    int qnt, cor, fim;
-    printf("Quantos jogadores participarao? ");
-    scanf("%i", &qnt);
-
-    seeds(lista, qnt);
-    imprimirListaJogadores(lista);
-    removerDinheiroListaJogadores(lista, "vermelho", 5);
-    adicinarDinheiroListaJogadores(lista, "verde", 10);
-    removerTapeteListaJogadores(lista, "amarelo", 10);
-    removerTapeteListaJogadores(lista, "vermelho", 10);
-    imprimirListaJogadores(lista);
-    fim = verificarFimJogo(lista);
-
-    if(fim){
-        verificarVencedor(lista);
-    }
-}*/
-int mainKayky(){
-    srand(time(NULL));
-    int qnt, cor;
-    printf("Quantos jogadores participar�o?\n");
-    scanf("%i", &qnt);
-
-    system("cls");
-    Assam *piece = criarAssam();
-    Tabuleiro *board = criarT();
-    do{
-
-    }while(0);
-    return 0;
-}
-
 void seeds(ListaJogadores *lc, int qtd){
     struct jogadorOf novo;
     int success;
     const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
 
     for(int i = 0; i < qtd; i++){
-        novo.quantidadeTapetes = 15;
-        novo.dinheiro = 30;
+        novo.quantidadeTapetes = 3;
+        novo.dinheiro = 1;
 
         snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
         inserirFimListaJogadores(lc ,novo);
     }
 }
-void printState(Assam* pieceAssam, Tabuleiro* tab, ListaJogadores* lista, int vez) {
-    printVez(vez);
+void printState(Assam* pieceAssam, Tabuleiro* tab, ListaJogadores* lista, struct jogadorOf *jogadorVez) {
+    printVez(jogadorVez->cor);
     imprimirListaJogadores(lista);
     printTable(tab, pieceAssam);
 }
+

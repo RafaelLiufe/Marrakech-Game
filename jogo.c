@@ -13,22 +13,20 @@ struct assam{
     Espaco* posicao;//ponteiro pro tabuleiro;
 };
 
-struct jogador{
-    int dinheiro;
-    char cor[10];
-    int quantidade;
-    struct jogador *proximo;
-    struct jogador *anterior;
-};
-
-typedef struct jogador jogador;
-
 int dado(){
     srand(clock());
 
     int n = 1 + rand()%(6);
 
-    return n;
+    if (n == 1) {
+        return 1;
+    } else if (n == 2 || n == 3) {
+        return 2;
+    } else if (n == 4) {
+        return 3;
+    } else {
+        return 4;
+    }
 }
 
 struct espaco {
@@ -114,10 +112,9 @@ int moverAssam(Assam *piece, int n, Tabuleiro* tab){
     }
     return 1;
 }
-int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *lista_de_jogadores, int vez){
+int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *lista_de_jogadores, const char* color){
     Espaco *aux1, *aux2;
     Assam auxPiece = *piece;
-    char player[10];
     if((casa2 - casa1 + 4) % 4 == 2)
         return 0;
     switch(casa1){
@@ -159,24 +156,7 @@ int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *l
             return 0;
         }
     }
-    switch (vez) {
-    case 0:
-        strcpy(player, "vermelho");
-        break;
-    case 1:
-        strcpy(player, "amarelo");
-        break;
-    case 2:
-        strcpy(player, "verde");
-        break;
-    case 3:
-        strcpy(player, "azul");
-        break;
-    case 4:
-        strcpy(player, "roxo");
-        break;
-    }
-    return empilha(aux1->tapetes, aux2->tapetes, player);
+    return empilha(aux1->tapetes, aux2->tapetes, color);
 }
 int descontarValor(Assam *piece, Jogadores *lista_jogadores, int player){
     Assam auxPiece = *piece;
@@ -219,16 +199,19 @@ int BuscaProfunda(Espaco *casa, int **visitado, char color[10]) {
     return size;
 }
 
-int AreaDoTapete(Espaco *casa, char color[10]) {
+int AreaDoTapete(Assam* casa) {
     int **visitado = (int**)malloc(sizeof(int*)*TAM);
     for(int i=0;i<TAM;i++)
         visitado[i] = (int*)malloc(sizeof(int)*TAM);
     for(int i=0;i<TAM;i++)
         for(int j=0;j<TAM;j++)
             visitado[i][j] = 0;
-    return BuscaProfunda(casa, visitado, color);
+    int area = BuscaProfunda((*casa)->posicao, visitado, (*((*casa)->posicao->tapetes))->cor);
+    for(int i =0;i<TAM;i++)
+        free(visitado[i]);
+    free(visitado);
+    return area;
 }
-
 void printInicio() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -249,39 +232,35 @@ void printInicio() {
     SetConsoleTextAttribute(hConsole, 7);
 
 }
-void printVez(int vez) {
+void printVez(const char* color) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     printf("\t\t\t     ");
     printf("Vez do jogador ");
-    switch (vez) {
-    case 0:
+    if (strcmp(color, "vermelho") == 0) {
         SetConsoleTextAttribute(hConsole, 4);
-        printf("vermelho\n");
-        break;
-    case 1:
+    } else if (strcmp(color, "amarelo") == 0) {
         SetConsoleTextAttribute(hConsole, 6);
-        printf("amarelo\n");
-        break;
-    case 2:
+    } else if (strcmp(color, "verde") == 0) {
         SetConsoleTextAttribute(hConsole, 2);
-        printf("verde\n");
-        break;
-    case 3:
+    } else if (strcmp(color, "azul") == 0) {
         SetConsoleTextAttribute(hConsole, 1);
-        printf("azul\n");
-        break;
-    case 4:
+    } else {
         SetConsoleTextAttribute(hConsole, 5);
-        printf("roxo\n");
-        break;
     }
+    printf("%s\n", color);
     SetConsoleTextAttribute(hConsole, 7);
 }
-/*
-void printState(Assam* pieceAssam,  ListaJogadores* lista, int vez, Tabuleiro* tab) {
-    printVez(vez);
-    imprimirListaJogadores(lista);
-    printTable(tab, pieceAssam);
+
+void updateInfo(ListaJogadores* lista, struct jogadorOf *jogadorVez, Assam* assamPiece) {
+    Assam aux = *assamPiece;
+    const char* tapete = (*aux->posicao->tapetes != NULL) ? (*aux->posicao->tapetes)->cor : " ";
+    if (strcmp(jogadorVez->cor, tapete)==0)
+        return;
+    int area = AreaDoTapete(assamPiece);
+    if(area == 0)
+        return;
+    printf("Jogador %s deve pagar %i moedas ao jogador %s\n", jogadorVez->cor, area, tapete);
+    removerDinheiroListaJogadores(lista, jogadorVez->cor, area);
+    adicinarDinheiroListaJogadores(lista, tapete, area);
 }
-*/

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <windows.h>
 #include "jogadores.h"
+
 struct elementoListaJogadores {
     struct jogadorOf dados;
     struct elementoListaJogadores *prox;
@@ -351,8 +352,9 @@ void verificarVencedor(ListaJogadores *lc) {
 int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogadorOf *j) {
     if (vaziaListaJogadores(lc))
         return 0;
-    else if (strcmp((*lc)->dados.cor, cor) == 0)
+    else if (strcmp((*lc)->dados.cor, cor) == 0){
         *j = (*lc)->dados;
+    }
     else {
         ElementoListaJogadores *aux = *lc;
         do {

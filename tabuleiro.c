@@ -204,7 +204,43 @@ void printTable(Tabuleiro* tab, Assam* ass) {
         Espaco* aux = ref;
         printf("\t\t      ");
         for (int i = 0; i < TAM; i++) {
-            if (*(aux->tapetes) != NULL) {
+            if (*(aux->tapetes) != NULL && (*ass)->posicao == aux) {
+                printf("| ");
+                CONSOLE_SCREEN_BUFFER_INFO consoleInfo;
+                WORD saved_attributes;
+                GetConsoleScreenBufferInfo(hConsole, &consoleInfo);
+                saved_attributes = consoleInfo.wAttributes;
+
+                SetConsoleTextAttribute(hConsole, 3);
+                Tap* tap = *(aux->tapetes);
+                if (strcmp(tap->cor, "vermelho") == 0) {
+                    SetConsoleTextAttribute(hConsole, 4 * 16 + 3);
+                } else if (strcmp(tap->cor, "amarelo") == 0) {
+                    SetConsoleTextAttribute(hConsole, 6 * 16 + 3);
+                } else if (strcmp(tap->cor, "verde") == 0) {
+                    SetConsoleTextAttribute(hConsole, 2 * 16 + 3);
+                } else if (strcmp(tap->cor, "azul") == 0) {
+                    SetConsoleTextAttribute(hConsole, 1 * 16 + 3);
+                } else {
+                    SetConsoleTextAttribute(hConsole, 5 * 16 + 3);
+                }
+                switch ((*ass)->orientacao) {
+                case 0:
+                    printf("▲");
+                    break;
+                case 1:
+                    printf("►");
+                    break;
+                case 2:
+                    printf("▼");
+                    break;
+                case 3:
+                    printf("◄");
+                    break;
+                }
+                SetConsoleTextAttribute(hConsole, saved_attributes);
+                printf(" ");
+            } else if (*(aux->tapetes) != NULL) {
                 printf("| ");
                 Tap* tap = *(aux->tapetes);
                 if (strcmp(tap->cor, "vermelho") == 0) {
@@ -216,7 +252,6 @@ void printTable(Tabuleiro* tab, Assam* ass) {
                 } else if (strcmp(tap->cor, "azul") == 0) {
                     SetConsoleTextAttribute(hConsole, 1);
                 } else {
-                    printf("cor: (%s)", tap->cor);
                     SetConsoleTextAttribute(hConsole, 5);
                 }
                 printf("■ ");
