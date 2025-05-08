@@ -21,5 +21,6 @@ int removerTapeteListaJogadores(ListaJogadores*,const char*, int);
 int verificarFimJogo(ListaJogadores*);
 void verificarVencedor(ListaJogadores*);
 
+struct jogadorOf* criarJ();
 int acessarJogadorPorCor(ListaJogadores*, const char* , struct jogadorOf*);
 void passarVez(ListaJogadores*, struct jogadorOf*);

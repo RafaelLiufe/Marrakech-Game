@@ -14,6 +14,7 @@ struct assam{
 };
 
 int dado(){
+    return 4;
     srand(clock());
 
     int n = 1 + rand()%(6);
@@ -263,4 +264,42 @@ void updateInfo(ListaJogadores* lista, struct jogadorOf *jogadorVez, Assam* assa
     printf("Jogador %s deve pagar %i moedas ao jogador %s\n", jogadorVez->cor, area, tapete);
     removerDinheiroListaJogadores(lista, jogadorVez->cor, area);
     adicinarDinheiroListaJogadores(lista, tapete, area);
+}
+void diceAnim() {
+    int diceAux = 0;
+
+
+    printf("\t\t\t\t  Dado girando");
+    for (int i = 1; i <= 8; i++) {
+        switch (diceAux) {
+            case 0:
+                printf("");
+                break;
+            case 1:
+                printf(".");
+                break;
+            case 2:
+                printf("..");
+                break;
+            case 3:
+                printf("...");
+                break;
+        }
+        fflush(stdout);
+        Sleep(600);
+        for (int i = 1; i <= diceAux; i++) {
+            printf("\b \b");
+        }
+        if (diceAux < 3) {
+            diceAux++;
+        } else {
+            diceAux = 0;
+        }
+        fflush(stdout);
+    }
+        printf("\n");
+}
+DWORD WINAPI passo(LPVOID lpParam) {
+    Beep(261, 200);
+    return 0;
 }

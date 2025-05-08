@@ -1,3 +1,4 @@
+#include <windows.h>
 #include "tabuleiro.h"
 typedef struct espaco Espaco;
 typedef Espaco* Tabuleiro;
@@ -16,4 +17,6 @@ int putTapete(Tabuleiro*, Assam*, int, int, Jogadores*, const char*);
 int AreaDoTapete(Assam*);
 void printInicio();
 void printVez(const char*);
+void diceAnim();
+DWORD WINAPI passo(LPVOID);
 //void printState(Assam*, ListaJogadores*, int, Tabuleiro*);

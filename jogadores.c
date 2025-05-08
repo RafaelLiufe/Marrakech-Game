@@ -58,7 +58,6 @@ void imprimirListaJogadores(ListaJogadores *lc) {
     } while (aux != inicio);
     printf("\t\t\t+-----------+--------+----------+\n");
 }
-
 ListaJogadores* criarListaJogadores() {
     ListaJogadores *ldcj;
     ldcj = (ListaJogadores*)malloc(sizeof(ListaJogadores));
@@ -348,21 +347,33 @@ void verificarVencedor(ListaJogadores *lc) {
         printf("Vencedor: %s!\n", jogadores[0]->dados.cor);
     }
 }
-
-int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogadorOf *j) {
-    if (vaziaListaJogadores(lc))
-        return 0;
-    else if (strcmp((*lc)->dados.cor, cor) == 0){
-        *j = (*lc)->dados;
+struct jogadorOf* criarJ() {
+    struct jogadorOf* novo = (struct jogadorOf*)malloc(sizeof(struct jogadorOf));
+    if (novo != NULL) {
+        return novo;
+    } else {
+        printf("jogador nulo");
+        return NULL;
     }
-    else {
+}
+int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogadorOf *j) {
+    if (vaziaListaJogadores(lc)) {
+        return 0;
+    } else if (strcmp((*lc)->dados.cor, cor) == 0){
+        strcpy(j->cor, (*lc)->dados.cor);
+        j->dinheiro = (*lc)->dados.dinheiro;
+        j->quantidadeTapetes = (*lc)->dados.quantidadeTapetes;
+    } else {
         ElementoListaJogadores *aux = *lc;
         do {
             aux = aux->prox;
         } while (aux != *lc && strcmp(aux->dados.cor, cor) != 0);
 
         if (aux == *lc) return 0;
-        *j = aux->dados;
+        j = &aux->dados;
+        strcpy(j->cor, aux->dados.cor);
+        j->dinheiro = aux->dados.dinheiro;
+        j->quantidadeTapetes = aux->dados.quantidadeTapetes;
     }
     return 1;
 }
