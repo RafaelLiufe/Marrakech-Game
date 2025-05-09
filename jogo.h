@@ -5,7 +5,7 @@ typedef Espaco* Tabuleiro;
 typedef struct tap* Pilha;
 typedef struct assam* Assam;
 typedef struct lista* Jogadores;
-
+typedef struct jogadorOf jogadorOf;
 Pilha* criarP();
 int dado();
 Jogadores* listaJogadores(int);
@@ -13,7 +13,7 @@ int setPlayer(Jogadores*, int, int);
 Assam* criarAssam();
 void setPosAssam(Assam*, Espaco*);
 int moverAssam(Assam*, int,Tabuleiro*);
-int putTapete(Tabuleiro*, Assam*, int, int, Jogadores*, const char*);
+int putTapete(Tabuleiro*, Assam*, int, int, Jogadores*, struct jogadorOf*);
 int AreaDoTapete(Assam*);
 void printInicio();
 void printVez(const char*);

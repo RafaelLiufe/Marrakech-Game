@@ -80,11 +80,11 @@ int main() {
             printf("Agora, em relação ao primeiro tapete ");
             scanf("%d", &tap2);
             fflush(stdin);
-        } while (!putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez->cor));
+        } while (!putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez));
         //(tap1 < 0 || tap1 > 3 || tap2 < 0 || tap2 > 3)&&(tap2 != (tap1 + 2)%4)
         thread = CreateThread(NULL, 0, putTap, NULL, 0, &threadId);
         //putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez->cor);
-        removerTapeteListaJogadores(lista, jogadorVez->cor, 1);
+        removerTapeteListaJogadores(lista, jogadorVez, 1);
         system("cls");
         printState(pieceAssam, tab, lista, jogadorVez);
         printf("\t\t    ");
@@ -95,7 +95,7 @@ int main() {
         passarVez(lista, jogadorVez);
         fim = verificarFimJogo(lista);
     }
-    printf("fim!");
+    verificarVencedor(lista);
     return 0;
 }
 void seeds(ListaJogadores *lc, int qtd){
@@ -104,8 +104,8 @@ void seeds(ListaJogadores *lc, int qtd){
     const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
 
     for(int i = 0; i < qtd; i++){
-        novo.quantidadeTapetes = 5;
-        novo.dinheiro = 3;
+        novo.quantidadeTapetes = 1;
+        novo.dinheiro = 30;
 
         snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
         inserirFimListaJogadores(lc ,novo);

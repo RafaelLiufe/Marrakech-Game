@@ -112,7 +112,7 @@ int moverAssam(Assam *piece, int n, Tabuleiro* tab){
     }
     return 1;
 }
-int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *lista_de_jogadores, const char* color){
+int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *lista_de_jogadores, struct jogadorOf* jogadorVez){
     Espaco *aux1, *aux2;
     Assam auxPiece = *piece;
     if((casa1 < 0 || casa1 > 3 || casa2 < 0 || casa2 > 3)){
@@ -206,7 +206,7 @@ int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *l
             return 0;
         }
     }
-    return empilha(aux1->tapetes, aux2->tapetes, color);
+    return empilha(aux1->tapetes, aux2->tapetes, jogadorVez->cor);
 }
 int descontarValor(Assam *piece, Jogadores *lista_jogadores, int player){
     Assam auxPiece = *piece;
@@ -295,14 +295,20 @@ void printVez(const char* color) {
 int updateInfo(ListaJogadores* lista, struct jogadorOf *jogadorVez, Assam* assamPiece, int* removido) {
     Assam aux = *assamPiece;
     const char* tapete = (*aux->posicao->tapetes != NULL) ? (*aux->posicao->tapetes)->cor : " ";
-    if (strcmp(jogadorVez->cor, tapete)==0)
+    const char cor[10];
+    strcpy(cor, jogadorVez->cor);
+    if (strcmp(cor, tapete)==0)
         return 0;
     int area = AreaDoTapete(assamPiece);
     if(area == 0)
         return 0;
-    int qtd = removerDinheiroListaJogadores(lista, jogadorVez->cor, area, jogadorVez, removido);
+    struct jogadorOf* isInGame = criarJ();
+    if(!acessarJogadorPorCor(lista, tapete, isInGame))
+        return 0;
+    free(isInGame);
+    int qtd = removerDinheiroListaJogadores(lista, cor, area, jogadorVez, removido);
     adicinarDinheiroListaJogadores(lista, tapete, qtd);
-    printf("\t\t Jogador %s pagou %i moedas ao jogador %s", jogadorVez->cor, qtd, tapete);
+    printf("\t\t Jogador %s pagou %i moedas ao jogador %s\n", cor, qtd, tapete);
     return 1;
 }
 void diceAnim() {

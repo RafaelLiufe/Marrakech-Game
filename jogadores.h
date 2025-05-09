@@ -16,7 +16,7 @@ void imprimirListaJogadores(ListaJogadores*);
 
 int removerDinheiroListaJogadores(ListaJogadores*,const char*, int, struct jogadorOf*, int*);
 int adicinarDinheiroListaJogadores(ListaJogadores*,const char*, int);
-int removerTapeteListaJogadores(ListaJogadores*,const char*, int);
+int removerTapeteListaJogadores(ListaJogadores*,struct jogadorOf*, int);
 
 int verificarFimJogo(ListaJogadores*);
 void verificarVencedor(ListaJogadores*);

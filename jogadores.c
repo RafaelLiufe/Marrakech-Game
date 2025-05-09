@@ -4,6 +4,7 @@
 #include <windows.h>
 #include "jogadores.h"
 
+
 struct elementoListaJogadores {
     struct jogadorOf dados;
     struct elementoListaJogadores *prox;
@@ -228,11 +229,11 @@ int adicinarDinheiroListaJogadores(ListaJogadores *lc, const char *cor, int qtd)
     return 0;
 }
 
-int removerTapeteListaJogadores(ListaJogadores *lc, const char *cor, int qtd) {
+int removerTapeteListaJogadores(ListaJogadores *lc, struct jogadorOf *jogadorVez, int qtd) {
     if (vaziaListaJogadores(lc)) {
         return 0;
     }
-
+    const char *cor = jogadorVez->cor;
     ElementoListaJogadores *aux = *lc;
     do {
         if (strcmp(aux->dados.cor, cor) == 0) {
@@ -361,6 +362,7 @@ struct jogadorOf* criarJ() {
 }
 int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogadorOf *j) {
     if (vaziaListaJogadores(lc)) {
+        strcpy(j->cor, "");
         return 0;
     } else if (strcmp((*lc)->dados.cor, cor) == 0){
         strcpy(j->cor, (*lc)->dados.cor);
@@ -372,7 +374,10 @@ int acessarJogadorPorCor(ListaJogadores *lc, const char *cor, struct jogadorOf *
             aux = aux->prox;
         } while (aux != *lc && strcmp(aux->dados.cor, cor) != 0);
 
-        if (aux == *lc) return 0;
+        if (aux == *lc){
+            strcpy(j->cor, "");
+            return 0;
+        }
         j = &aux->dados;
         strcpy(j->cor, aux->dados.cor);
         j->dinheiro = aux->dados.dinheiro;
