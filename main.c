@@ -43,7 +43,7 @@ int main() {
             printState(pieceAssam, tab, lista, jogadorVez);
             printf("Você deseja girar o Assam em sentido horário (1), anti-horário (2) ou não girar(0)? ");
             scanf("%d", &sentido);
-        } while (sentido != 1 || sentido != 2 || sentido != 0);
+        } while (sentido != 1 && sentido != 2 && sentido != 0);
 
         if(sentido){
             if(sentido == 1)
@@ -67,11 +67,16 @@ int main() {
             printState(pieceAssam, tab, lista, jogadorVez);
             Sleep(500);
         }
-        updateInfo(lista, jogadorVez, pieceAssam);
-        printf("Onde deseja colocar um tapete? Digite dois números: Norte(0), Leste(1), Sul(2), Oeste(3)");
-        scanf("%d", &tap1);
-        scanf("%d", &tap2);
-        fflush(stdin);
+        if (updateInfo(lista, jogadorVez, pieceAssam)) Sleep(3500);
+        do {
+            system("cls");
+            printState(pieceAssam, tab, lista, jogadorVez);
+            printf("Onde deseja colocar um tapete? Digite dois números: Norte(0), Leste(1), Sul(2), Oeste(3)");
+            scanf("%d", &tap1);
+            scanf("%d", &tap2);
+            fflush(stdin);
+        } while (tap1 < 0 || tap1 > 3 || tap2 < 0 || tap2 > 3);
+        thread = CreateThread(NULL, 0, putTap, NULL, 0, &threadId);
         putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez->cor);
         removerTapeteListaJogadores(lista, jogadorVez->cor, 1);
         system("cls");
@@ -79,12 +84,6 @@ int main() {
         printf("\t\t    ");
         system("pause");
         system("cls");
-
-//        if (vez != qnt - 1) {
-//            vez++;
-//        } else {
-//            vez = 0;
-//        }
         passarVez(lista, jogadorVez);
         fim = verificarFimJogo(lista);
     }

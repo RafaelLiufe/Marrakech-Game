@@ -19,4 +19,6 @@ void printInicio();
 void printVez(const char*);
 void diceAnim();
 DWORD WINAPI passo(LPVOID);
+DWORD WINAPI putTap(LPVOID);
+DWORD WINAPI dice(LPVOID);
 //void printState(Assam*, ListaJogadores*, int, Tabuleiro*);

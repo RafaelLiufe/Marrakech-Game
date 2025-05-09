@@ -14,7 +14,6 @@ struct assam{
 };
 
 int dado(){
-    return 4;
     srand(clock());
 
     int n = 1 + rand()%(6);
@@ -167,19 +166,6 @@ int descontarValor(Assam *piece, Jogadores *lista_jogadores, int player){
     }
     return 0;
 }
-/*int checarJogador(Jogadores *lista_jogadores, int player){
-    if((*lista_jogadores)->players[player].dinheiro <= 0){
-       struct lista *aux = *lista_jogadores;
-       if(player != aux->n){
-       jogador temporario = aux->players[player];
-       aux->players[player] = aux->players[aux->n];
-       aux->players[aux->n] = temporario;
-       }
-       aux->n--;
-       return 1;
-    }
-    return 0;
-}*/
 int BuscaProfunda(Espaco *casa, int **visitado, char color[10]) {
     if (visitado[casa->linha][casa->coluna] || *casa->tapetes == NULL || strcmp((*casa->tapetes)->cor, color)!=0)
         return 0;
@@ -244,30 +230,37 @@ void printVez(const char* color) {
         SetConsoleTextAttribute(hConsole, 6);
     } else if (strcmp(color, "verde") == 0) {
         SetConsoleTextAttribute(hConsole, 2);
+        printf(" ");
     } else if (strcmp(color, "azul") == 0) {
         SetConsoleTextAttribute(hConsole, 1);
+        printf(" ");
     } else {
         SetConsoleTextAttribute(hConsole, 5);
+        printf(" ");
     }
     printf("%s\n", color);
     SetConsoleTextAttribute(hConsole, 7);
 }
 
-void updateInfo(ListaJogadores* lista, struct jogadorOf *jogadorVez, Assam* assamPiece) {
+int updateInfo(ListaJogadores* lista, struct jogadorOf *jogadorVez, Assam* assamPiece) {
     Assam aux = *assamPiece;
     const char* tapete = (*aux->posicao->tapetes != NULL) ? (*aux->posicao->tapetes)->cor : " ";
     if (strcmp(jogadorVez->cor, tapete)==0)
-        return;
+        return 0;
     int area = AreaDoTapete(assamPiece);
     if(area == 0)
-        return;
-    printf("Jogador %s deve pagar %i moedas ao jogador %s\n", jogadorVez->cor, area, tapete);
+        return 0;
     removerDinheiroListaJogadores(lista, jogadorVez->cor, area);
     adicinarDinheiroListaJogadores(lista, tapete, area);
+    printf("\t\t Jogador %s pagou %i moedas ao jogador %s", jogadorVez->cor, area, tapete);
+    return 1;
 }
 void diceAnim() {
-    int diceAux = 0;
+    HANDLE thread;
+    DWORD threadId;
 
+    int diceAux = 0;
+    thread = CreateThread(NULL, 0, dice, NULL, 0, &threadId);
 
     printf("\t\t\t\t  Dado girando");
     for (int i = 1; i <= 8; i++) {
@@ -301,5 +294,13 @@ void diceAnim() {
 }
 DWORD WINAPI passo(LPVOID lpParam) {
     Beep(261, 200);
+    return 0;
+}
+DWORD WINAPI putTap(LPVOID lpParam) {
+    Beep(342, 200);
+    return 0;
+}
+DWORD WINAPI dice(LPVOID lpParam) {
+    Beep(200, 5000);
     return 0;
 }
