@@ -115,19 +115,47 @@ int moverAssam(Assam *piece, int n, Tabuleiro* tab){
 int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *lista_de_jogadores, const char* color){
     Espaco *aux1, *aux2;
     Assam auxPiece = *piece;
-    if((casa2 - casa1 + 4) % 4 == 2)
+    if((casa1 < 0 || casa1 > 3 || casa2 < 0 || casa2 > 3)){
+        printf("Posições inválidas\n");
+        system("pause");
         return 0;
+    }
+    if((casa2 == (casa1 + 2)%4)){
+        printf("Não pode colocar o tapete abaixo de Assam\n");
+        system("pause");
+        return 0;
+    }
     switch(casa1){
         case 0:
+            if(auxPiece->posicao->linha == 0){
+                printf("Não pode passar da borda do tabuleiro\n");
+                system("pause");
+                return 0;
+            }
             aux1 = auxPiece->posicao->norte;
             break;
         case 1:
+            if(auxPiece->posicao->coluna == TAM - 1){
+                printf("Não pode passar da borda do tabuleiro\n");
+                system("pause");
+                return 0;
+            }
             aux1 = auxPiece->posicao->leste;
             break;
         case 2:
+            if(auxPiece->posicao->linha == TAM - 1){
+                printf("Não pode passar da borda do tabuleiro\n");
+                system("pause");
+                return 0;
+            }
             aux1 = auxPiece->posicao->sul;
             break;
         case 3:
+            if(auxPiece->posicao->coluna == 0){
+                printf("Não pode passar da borda do tabuleiro\n");
+                system("pause");
+                return 0;
+            }
             aux1 = auxPiece->posicao->oeste;
             break;
         default:
@@ -136,15 +164,35 @@ int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *l
     }
     switch(casa2){
         case 0:
+            if(aux1->linha == 0){
+                printf("Não pode passar da borda do tabuleiro\n");
+                system("pause");
+                return 0;
+            }
             aux2 = aux1->norte;
             break;
         case 1:
+            if(aux1->coluna == TAM - 1){
+                printf("Não pode passar da borda do tabuleiro\n");
+                system("pause");
+                return 0;
+            }
             aux2 = aux1->leste;
             break;
         case 2:
+            if(aux1->linha == TAM - 1){
+                printf("Não pode passar da borda do tabuleiro\n");
+                system("pause");
+                return 0;
+            }
             aux2 = aux1->sul;
             break;
         case 3:
+            if(aux1->coluna == 0){
+                printf("Não pode passar da borda do tabuleiro\n");
+                system("pause");
+                return 0;
+            }
             aux2 = aux1->oeste;
             break;
         default:
@@ -153,6 +201,8 @@ int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *l
     }
     if ((*aux1->tapetes) != NULL && (*aux2->tapetes) != NULL) {
         if((*aux1->tapetes)->outro == (*aux2->tapetes)){//há um tapete completo por cima
+            printf("Não pode cobrir outro tapete completamente\n");
+            system("pause");
             return 0;
         }
     }
@@ -242,7 +292,7 @@ void printVez(const char* color) {
     SetConsoleTextAttribute(hConsole, 7);
 }
 
-int updateInfo(ListaJogadores* lista, struct jogadorOf *jogadorVez, Assam* assamPiece) {
+int updateInfo(ListaJogadores* lista, struct jogadorOf *jogadorVez, Assam* assamPiece, int* removido) {
     Assam aux = *assamPiece;
     const char* tapete = (*aux->posicao->tapetes != NULL) ? (*aux->posicao->tapetes)->cor : " ";
     if (strcmp(jogadorVez->cor, tapete)==0)
@@ -250,9 +300,9 @@ int updateInfo(ListaJogadores* lista, struct jogadorOf *jogadorVez, Assam* assam
     int area = AreaDoTapete(assamPiece);
     if(area == 0)
         return 0;
-    removerDinheiroListaJogadores(lista, jogadorVez->cor, area);
-    adicinarDinheiroListaJogadores(lista, tapete, area);
-    printf("\t\t Jogador %s pagou %i moedas ao jogador %s", jogadorVez->cor, area, tapete);
+    int qtd = removerDinheiroListaJogadores(lista, jogadorVez->cor, area, jogadorVez, removido);
+    adicinarDinheiroListaJogadores(lista, tapete, qtd);
+    printf("\t\t Jogador %s pagou %i moedas ao jogador %s", jogadorVez->cor, qtd, tapete);
     return 1;
 }
 void diceAnim() {

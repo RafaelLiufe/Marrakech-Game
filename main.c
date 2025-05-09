@@ -67,27 +67,35 @@ int main() {
             printState(pieceAssam, tab, lista, jogadorVez);
             Sleep(500);
         }
-        if (updateInfo(lista, jogadorVez, pieceAssam)) Sleep(3500);
+        int removido = 0;
+        if (updateInfo(lista, jogadorVez, pieceAssam, &removido))
+            Sleep(3500);
+        if(!removido){
+
         do {
             system("cls");
             printState(pieceAssam, tab, lista, jogadorVez);
-            printf("Onde deseja colocar um tapete? Digite dois números: Norte(0), Leste(1), Sul(2), Oeste(3)");
+            printf("Onde deseja colocar um tapete?\nDigite um número em relação à Assam: Norte(0), Leste(1), Sul(2), Oeste(3) ");
             scanf("%d", &tap1);
+            printf("Agora, em relação ao primeiro tapete ");
             scanf("%d", &tap2);
             fflush(stdin);
-        } while (tap1 < 0 || tap1 > 3 || tap2 < 0 || tap2 > 3);
+        } while (!putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez->cor));
+        //(tap1 < 0 || tap1 > 3 || tap2 < 0 || tap2 > 3)&&(tap2 != (tap1 + 2)%4)
         thread = CreateThread(NULL, 0, putTap, NULL, 0, &threadId);
-        putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez->cor);
+        //putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez->cor);
         removerTapeteListaJogadores(lista, jogadorVez->cor, 1);
         system("cls");
         printState(pieceAssam, tab, lista, jogadorVez);
         printf("\t\t    ");
+
+        }
         system("pause");
         system("cls");
         passarVez(lista, jogadorVez);
         fim = verificarFimJogo(lista);
     }
-
+    printf("fim!");
     return 0;
 }
 void seeds(ListaJogadores *lc, int qtd){
@@ -96,8 +104,8 @@ void seeds(ListaJogadores *lc, int qtd){
     const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
 
     for(int i = 0; i < qtd; i++){
-        novo.quantidadeTapetes = 15;
-        novo.dinheiro = 30;
+        novo.quantidadeTapetes = 5;
+        novo.dinheiro = 3;
 
         snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
         inserirFimListaJogadores(lc ,novo);

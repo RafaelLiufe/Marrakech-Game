@@ -11,10 +11,10 @@ int tamanhoListaJogadores(ListaJogadores*);
 int vaziaListaJogadores(ListaJogadores*);
 int cheiaListaJogadores(ListaJogadores*);
 int inserirFimListaJogadores(ListaJogadores*, struct jogadorOf);
-int removerMeioListaJogadores(ListaJogadores*,const char*);
+int removerMeioListaJogadores(ListaJogadores*,const char*, struct jogadorOf*);
 void imprimirListaJogadores(ListaJogadores*);
 
-int removerDinheiroListaJogadores(ListaJogadores*,const char*, int);
+int removerDinheiroListaJogadores(ListaJogadores*,const char*, int, struct jogadorOf*, int*);
 int adicinarDinheiroListaJogadores(ListaJogadores*,const char*, int);
 int removerTapeteListaJogadores(ListaJogadores*,const char*, int);
 

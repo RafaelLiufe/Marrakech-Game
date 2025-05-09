@@ -143,7 +143,7 @@ int inserirFimListaJogadores(ListaJogadores *lc, struct jogadorOf novosdados) {
     }
 }
 
-int removerMeioListaJogadores(ListaJogadores *lc, const char *cor) {
+int removerMeioListaJogadores(ListaJogadores *lc, const char *cor, struct jogadorOf *jogadorVez) {
     if (vaziaListaJogadores(lc)) {
         return 0;
     }
@@ -163,6 +163,7 @@ int removerMeioListaJogadores(ListaJogadores *lc, const char *cor) {
             while (aux->prox != backup)
                 aux = aux->prox;
             aux->prox = *lc;
+            *jogadorVez = aux->dados;
         }
     }
     else {
@@ -177,12 +178,13 @@ int removerMeioListaJogadores(ListaJogadores *lc, const char *cor) {
             return 0;
         }
         ant->prox = aux->prox;
+        *jogadorVez = ant->dados;//antes de ser eliminado ele passa a vez
         free(aux);
     }
     return 1;
 }
 
-int removerDinheiroListaJogadores(ListaJogadores *lc, const char *cor, int qtd) {
+int removerDinheiroListaJogadores(ListaJogadores *lc, const char *cor, int qtd, struct jogadorOf *jogadorVez, int* removido) {
     if (vaziaListaJogadores(lc)) {
         printf("Lista vazia\n");
         return 0;
@@ -195,10 +197,11 @@ int removerDinheiroListaJogadores(ListaJogadores *lc, const char *cor, int qtd) 
 
             if (aux->dados.dinheiro <= 0) {
                 printf("Jogador %s ficou sem dinheiro, logo, perdeu!\n", cor);
-                removerMeioListaJogadores(lc, cor);
+                qtd += aux->dados.dinheiro;
+                *removido = removerMeioListaJogadores(lc, cor, jogadorVez);
             }
 
-            return 1;
+            return qtd;//retorna a quantidade que deve pagar, resolve o caso dele ter que pagar 5 tendo apenas 3 por exemplo
         }
         aux = aux->prox;
     } while (aux != *lc);
