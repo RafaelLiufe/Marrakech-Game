@@ -47,7 +47,7 @@ void imprimirListaJogadores(ListaJogadores *lc) {
         SetConsoleTextAttribute(hConsole, 7);
         printf(" | ");
         SetConsoleTextAttribute(hConsole, cor);
-        printf("%-6d", aux->dados.dinheiro);
+        printf("$%-5d", aux->dados.dinheiro);
         SetConsoleTextAttribute(hConsole, 7);
         printf(" | ");
         SetConsoleTextAttribute(hConsole, cor);
@@ -283,6 +283,8 @@ int verificarFimJogo(ListaJogadores *lc) {
 }
 
 void verificarVencedor(ListaJogadores *lc) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
     if (vaziaListaJogadores(lc)) {
         printf("Lista vazia, sem vencedor.\n");
         return;
@@ -290,15 +292,42 @@ void verificarVencedor(ListaJogadores *lc) {
 
     ElementoListaJogadores *inicio = *lc;
     ElementoListaJogadores *aux = inicio;
+    int cor;
 
-    // Verifica se só tem um jogador
+    if (strcmp(aux->dados.cor, "vermelho") == 0) {
+        cor = 4;
+    } else if (strcmp(aux->dados.cor, "amarelo") == 0) {
+        cor = 6;
+    } else if (strcmp(aux->dados.cor, "verde") == 0) {
+        cor = 2;
+    } else if (strcmp(aux->dados.cor, "azul") == 0) {
+        cor = 1;
+    } else {
+        cor = 5;
+    }
     if (aux->prox == aux) {
         printf("+---------+----------+----------+\n");
         printf("| Ranking |   Cor    | Dinheiro |\n");
         printf("+---------+----------+----------+\n");
-        printf("|    1    | %-8s | $%-7d |\n", aux->dados.cor, aux->dados.dinheiro);
+        printf("|    ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("1");
+        SetConsoleTextAttribute(hConsole, 7);
+        printf("    | ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("%-8s", aux->dados.cor);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf(" | ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("$%-7d", aux->dados.dinheiro);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf(" |\n");
         printf("+---------+----------+----------+\n");
-        printf("Vencedor: %s!\n", aux->dados.cor);
+        printf("Vencedor: ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("%s", aux->dados.cor);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf("!\n");
         return;
     }
 
@@ -329,26 +358,84 @@ void verificarVencedor(ListaJogadores *lc) {
     }
 
     // Imprimir ranking
-    printf("+---------+----------+----------+\n");
-    printf("| Ranking |   Cor    | Dinheiro |\n");
-    printf("+---------+----------+----------+\n");
+    printf("\t\t\t+---------+----------+----------+\n");
+    printf("\t\t\t| Ranking |   Cor    | Dinheiro |\n");
+    printf("\t\t\t+---------+----------+----------+\n");
     for (int i = 0; i < count; i++) {
-        printf("|   %-5d | %-8s | $%-7d |\n", i + 1, jogadores[i]->dados.cor, jogadores[i]->dados.dinheiro);
+        if (strcmp(jogadores[i]->dados.cor, "vermelho") == 0) {
+            cor = 4;
+        } else if (strcmp(jogadores[i]->dados.cor, "amarelo") == 0) {
+            cor = 6;
+        } else if (strcmp(jogadores[i]->dados.cor, "verde") == 0) {
+            cor = 2;
+        } else if (strcmp(jogadores[i]->dados.cor, "azul") == 0) {
+            cor = 1;
+        } else {
+            cor = 5;
+        }
+        printf("\t\t\t|   ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("%-5d", i + 1);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf(" | ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("%-8s", jogadores[i]->dados.cor);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf(" | ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("$%-7d", jogadores[i]->dados.dinheiro);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf(" |\n");
     }
-    printf("+---------+----------+----------+\n");
+    printf("\t\t\t+---------+----------+----------+\n");
 
     // Verificar empate
     if (jogadores[0]->dados.dinheiro == jogadores[1]->dados.dinheiro) {
-        printf("Empate entre jogadores com maior dinheiro:\n");
+        printf("\t\t   Empate entre jogadores com maior dinheiro:\n");
         for (int i = 0; i < count; i++) {
+            if (strcmp(jogadores[i]->dados.cor, "vermelho") == 0) {
+                cor = 4;
+            } else if (strcmp(jogadores[i]->dados.cor, "amarelo") == 0) {
+                cor = 6;
+            } else if (strcmp(jogadores[i]->dados.cor, "verde") == 0) {
+                cor = 2;
+            } else if (strcmp(jogadores[i]->dados.cor, "azul") == 0) {
+                cor = 1;
+            } else {
+                cor = 5;
+            }
+
             if (jogadores[i]->dados.dinheiro == jogadores[0]->dados.dinheiro) {
-                printf("- %s com $%d\n", jogadores[i]->dados.cor, jogadores[i]->dados.dinheiro);
+                printf("\t\t\t\t- ");
+                SetConsoleTextAttribute(hConsole, cor);
+                printf("%s", jogadores[i]->dados.cor);
+                SetConsoleTextAttribute(hConsole, 7);
+                printf(" com ");
+                SetConsoleTextAttribute(hConsole, cor);
+                printf("$%d", jogadores[i]->dados.dinheiro);
+                SetConsoleTextAttribute(hConsole, 7);
+                printf(" -\n");
             } else {
                 break;
             }
         }
     } else {
-        printf("Vencedor: %s!\n", jogadores[0]->dados.cor);
+        if (strcmp(jogadores[0]->dados.cor, "vermelho") == 0) {
+            cor = 4;
+        } else if (strcmp(jogadores[0]->dados.cor, "amarelo") == 0) {
+            cor = 6;
+        } else if (strcmp(jogadores[0]->dados.cor, "verde") == 0) {
+            cor = 2;
+        } else if (strcmp(jogadores[0]->dados.cor, "azul") == 0) {
+            cor = 1;
+        } else {
+            cor = 5;
+        }
+        printf("Vencedor: ");
+        SetConsoleTextAttribute(hConsole, cor);
+        printf("%s", jogadores[0]->dados.cor);
+        SetConsoleTextAttribute(hConsole, 7);
+        printf("!\n");
     }
 }
 struct jogadorOf* criarJ() {

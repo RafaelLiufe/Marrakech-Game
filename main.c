@@ -104,7 +104,7 @@ void seeds(ListaJogadores *lc, int qtd){
     const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
 
     for(int i = 0; i < qtd; i++){
-        novo.quantidadeTapetes = 1;
+        novo.quantidadeTapetes = 0;
         novo.dinheiro = 30;
 
         snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);

@@ -280,13 +280,10 @@ void printVez(const char* color) {
         SetConsoleTextAttribute(hConsole, 6);
     } else if (strcmp(color, "verde") == 0) {
         SetConsoleTextAttribute(hConsole, 2);
-        printf(" ");
     } else if (strcmp(color, "azul") == 0) {
         SetConsoleTextAttribute(hConsole, 1);
-        printf(" ");
     } else {
         SetConsoleTextAttribute(hConsole, 5);
-        printf(" ");
     }
     printf("%s\n", color);
     SetConsoleTextAttribute(hConsole, 7);
