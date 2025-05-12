@@ -12,6 +12,11 @@ struct assam{
     int orientacao;//0 norte, 1 leste, 2 sul, 3 oeste;
     Espaco* posicao;//ponteiro pro tabuleiro;
 };
+struct jogadorOf{
+    int dinheiro;
+    char cor[10];
+    int quantidadeTapetes;
+};
 
 int dado(){
     srand(clock());
@@ -28,7 +33,13 @@ int dado(){
         return 4;
     }
 }
-
+struct tap {
+    char cor[10];
+    struct tap* prox;
+    struct tap* outro;
+};
+typedef struct tap Tap;
+typedef struct tap* Pilha;
 struct espaco {
     Pilha* tapetes;
     struct espaco* norte;
@@ -38,11 +49,7 @@ struct espaco {
     int linha;
     int coluna;
 };
-struct tap {
-    char cor[10];
-    struct tap* prox;
-    struct tap* outro;
-};
+
 Assam* criarAssam(){
     Assam *piece;
     piece = (Assam*)malloc(sizeof(Assam));

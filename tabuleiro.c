@@ -8,6 +8,13 @@ struct assam{
     int orientacao;//0 norte, 1 leste, 2 sul, 3 oeste;
     Espaco* posicao;//ponteiro pro tabuleiro;
 };
+struct tap {
+    char cor[10];
+    struct tap* prox;
+    struct tap* outro;
+};
+typedef struct tap Tap;
+typedef struct tap* Pilha;
 struct espaco {
     Pilha* tapetes;
     struct espaco* norte;
@@ -17,12 +24,7 @@ struct espaco {
     int linha;
     int coluna;
 };
-struct tap {
-    char cor[10];
-    struct tap* prox;
-    struct tap* outro;
-};
-typedef struct tap Tap;
+typedef struct espaco Espaco;
 Pilha* criarPilha() {
     Pilha* p = (Pilha*)malloc(sizeof(Pilha));
     if (p != NULL) {

@@ -4,14 +4,83 @@
 #include <windows.h>
 #include "jogadores.h"
 
+struct tap {
+    char cor[10];
+    struct tap* prox;
+    struct tap* outro;
+};
+typedef struct tap* Pilha;
+struct espaco {
+    Pilha* tapetes;
+    struct espaco* norte;
+    struct espaco* sul;
+    struct espaco* leste;
+    struct espaco* oeste;
+    int linha;
+    int coluna;
+};
+typedef struct espaco Espaco;
+struct assam{
+    int orientacao;//0 norte, 1 leste, 2 sul, 3 oeste;
+    Espaco* posicao;//ponteiro pro tabuleiro;
+};
+struct jogadorOf{
+    int dinheiro;
+    char cor[10];
+    int quantidadeTapetes;
+};
 
 struct elementoListaJogadores {
     struct jogadorOf dados;
     struct elementoListaJogadores *prox;
 };
-
 typedef struct elementoListaJogadores ElementoListaJogadores;
 
+int inserirFimListaJogadores(ListaJogadores *lc, struct jogadorOf novosdados) {
+    if (lc == NULL) {
+        return 0;
+    }
+    else {
+
+        ElementoListaJogadores *novo = (ElementoListaJogadores*)malloc(sizeof(ElementoListaJogadores));
+
+        if (novo == NULL) return 0;
+
+        novo->dados = novosdados;
+
+        if (vaziaListaJogadores(lc)) {
+            *lc = novo;
+            novo->prox = novo;
+        }
+        else {
+            novo->prox = *lc;
+            ElementoListaJogadores *aux = *lc;
+            while (aux->prox != *lc) aux = aux->prox;
+            aux->prox = novo;
+            //novo->ante = aux;
+        }
+        return 1;
+    }
+}
+
+void seeds(ListaJogadores *lc, int qtd){
+    struct jogadorOf novo;
+    int success;
+    const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
+
+    for(int i = 0; i < qtd; i++){
+        novo.quantidadeTapetes = 15;
+        novo.dinheiro = 30;
+
+        snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
+        inserirFimListaJogadores(lc ,novo);
+    }
+}
+void printState(Assam* pieceAssam, Tabuleiro* tab, ListaJogadores* lista, struct jogadorOf *jogadorVez) {
+    printVez(jogadorVez->cor);
+    imprimirListaJogadores(lista);
+    printTable(tab, pieceAssam);
+}
 void imprimirListaJogadores(ListaJogadores *lc) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -117,32 +186,6 @@ int cheiaListaJogadores(ListaJogadores *lc) {
     return 0;
 }
 
-int inserirFimListaJogadores(ListaJogadores *lc, struct jogadorOf novosdados) {
-    if (lc == NULL) {
-        return 0;
-    }
-    else {
-
-        ElementoListaJogadores *novo = (ElementoListaJogadores*)malloc(sizeof(ElementoListaJogadores));
-
-        if (novo == NULL) return 0;
-
-        novo->dados = novosdados;
-
-        if (vaziaListaJogadores(lc)) {
-            *lc = novo;
-            novo->prox = novo;
-        }
-        else {
-            novo->prox = *lc;
-            ElementoListaJogadores *aux = *lc;
-            while (aux->prox != *lc) aux = aux->prox;
-            aux->prox = novo;
-            //novo->ante = aux;
-        }
-        return 1;
-    }
-}
 
 int removerMeioListaJogadores(ListaJogadores *lc, const char *cor, struct jogadorOf *jogadorVez) {
     if (vaziaListaJogadores(lc)) {

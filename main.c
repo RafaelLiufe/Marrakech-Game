@@ -96,22 +96,5 @@ int main() {
     verificarVencedor(lista);
     return 0;
 }
-void seeds(ListaJogadores *lc, int qtd){
-    struct jogadorOf novo;
-    int success;
-    const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
 
-    for(int i = 0; i < qtd; i++){
-        novo.quantidadeTapetes = 15;
-        novo.dinheiro = 30;
-
-        snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);
-        inserirFimListaJogadores(lc ,novo);
-    }
-}
-void printState(Assam* pieceAssam, Tabuleiro* tab, ListaJogadores* lista, struct jogadorOf *jogadorVez) {
-    printVez(jogadorVez->cor);
-    imprimirListaJogadores(lista);
-    printTable(tab, pieceAssam);
-}
 
