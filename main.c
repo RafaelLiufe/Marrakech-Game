@@ -81,9 +81,7 @@ int main() {
             scanf("%d", &tap2);
             fflush(stdin);
         } while (!putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez));
-        //(tap1 < 0 || tap1 > 3 || tap2 < 0 || tap2 > 3)&&(tap2 != (tap1 + 2)%4)
         thread = CreateThread(NULL, 0, putTap, NULL, 0, &threadId);
-        //putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez->cor);
         removerTapeteListaJogadores(lista, jogadorVez, 1);
         system("cls");
         printState(pieceAssam, tab, lista, jogadorVez);
@@ -104,7 +102,7 @@ void seeds(ListaJogadores *lc, int qtd){
     const char *cores[] = {"vermelho", "amarelo", "verde", "azul", "roxo"};
 
     for(int i = 0; i < qtd; i++){
-        novo.quantidadeTapetes = 0;
+        novo.quantidadeTapetes = 15;
         novo.dinheiro = 30;
 
         snprintf(novo.cor, sizeof(novo.cor), "%s", cores[i]);

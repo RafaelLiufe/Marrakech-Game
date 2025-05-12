@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 0 <<<<<<< HEAD
 
-1746887341 source:c:\users\rafael\documents\marrakech-game\main.c
+1747059205 source:c:\users\rafael\documents\marrakech-game\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -50,7 +50,7 @@
 
 1743513528 c:\users\kaike\desktop\algoritmos\marrakech-game\tabuleiro.h
 
-1746887149 source:c:\users\rafael\documents\marrakech-game\jogo.c
+1747059180 source:c:\users\rafael\documents\marrakech-game\jogo.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -65,7 +65,7 @@
 	<windows.h>
 	"tabuleiro.h"
 
-1746888766 source:c:\users\rafael\documents\marrakech-game\jogadores.c
+1746889628 source:c:\users\rafael\documents\marrakech-game\jogadores.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

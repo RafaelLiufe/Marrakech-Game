@@ -431,7 +431,7 @@ void verificarVencedor(ListaJogadores *lc) {
         } else {
             cor = 5;
         }
-        printf("Vencedor: ");
+        printf("\t\t\t      Vencedor: ");
         SetConsoleTextAttribute(hConsole, cor);
         printf("%s", jogadores[0]->dados.cor);
         SetConsoleTextAttribute(hConsole, 7);
