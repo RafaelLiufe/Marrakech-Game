@@ -1,4 +1,4 @@
-#define TAM 7
+#define TAM 9
 typedef struct espaco Espaco;
 typedef Espaco* Tabuleiro;
 typedef struct assam* Assam;

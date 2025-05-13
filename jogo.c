@@ -207,7 +207,7 @@ int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *l
             return 0;
     }
     if ((*aux1->tapetes) != NULL && (*aux2->tapetes) != NULL) {
-        if((*aux1->tapetes)->outro == (*aux2->tapetes)){//há um tapete completo por cima
+        if((*aux1->tapetes)->outro == (*aux2->tapetes)){
             printf("Não pode cobrir outro tapete completamente\n");
             system("pause");
             return 0;
@@ -218,7 +218,6 @@ int putTapete(Tabuleiro *board, Assam *piece, int casa1, int casa2, Jogadores *l
 int descontarValor(Assam *piece, Jogadores *lista_jogadores, int player){
     Assam auxPiece = *piece;
     if(strcmp((*auxPiece->posicao->tapetes)->cor, "vermelho")!=0){
-        //criar nó descritor com o tamanho da pilha ou implementar algoritmo de busca que retorna a área de um determinado trapete
         return 1;
     }
     return 0;

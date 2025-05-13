@@ -155,7 +155,11 @@ Tabuleiro* criarT() {
     while (ref->leste != NULL){
         ref = ref->leste;
     }
-    cont = 0;
+    if (TAM % 2 == 0) {
+        cont = 0;
+    } else {
+        cont = 1;
+    }
     while (ref != NULL) {
         if (ref->sul == NULL && cont == 0) {
             ref->leste = ref;
@@ -177,8 +181,6 @@ Tabuleiro* criarT() {
     for (int i = 0; i < TAM - 1; i++) {
         ref = ref->sul;
     }
-    //if (ref->oeste->oeste->oeste->oeste->sul == NULL) printf("sim"); ***Teste***
-    //if (ref->oeste->sul == NULL) printf("nulo"); ***Teste***
     for (int i = 0; i < TAM; i++) {
         if (TAM % 2 != 0 && i == TAM - 1) {
             ref->sul = ref;

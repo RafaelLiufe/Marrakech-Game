@@ -21,8 +21,8 @@ struct espaco {
 };
 typedef struct espaco Espaco;
 struct assam{
-    int orientacao;//0 norte, 1 leste, 2 sul, 3 oeste;
-    Espaco* posicao;//ponteiro pro tabuleiro;
+    int orientacao;
+    Espaco* posicao;
 };
 struct jogadorOf{
     int dinheiro;
@@ -57,7 +57,6 @@ int inserirFimListaJogadores(ListaJogadores *lc, struct jogadorOf novosdados) {
             ElementoListaJogadores *aux = *lc;
             while (aux->prox != *lc) aux = aux->prox;
             aux->prox = novo;
-            //novo->ante = aux;
         }
         return 1;
     }
@@ -123,7 +122,6 @@ void imprimirListaJogadores(ListaJogadores *lc) {
         printf("%-8d", aux->dados.quantidadeTapetes);
         SetConsoleTextAttribute(hConsole, 7);
         printf(" |\n");
-        //printf(" | %-6d | %-8d |\n", aux->dados.dinheiro, aux->dados.quantidadeTapetes);
         aux = aux->prox;
     } while (aux != inicio);
     printf("\t\t\t+-----------+--------+----------+\n");
@@ -149,7 +147,6 @@ void destruirListaJogadores(ListaJogadores *lc) {
         }
         free(aux);
         *lc = NULL;
-        //free(lc);
     }
 }
 
@@ -170,15 +167,6 @@ int tamanhoListaJogadores(ListaJogadores *lc) {
 }
 
 int vaziaListaJogadores(ListaJogadores *lc) {
-    /*if (lc == NULL) {
-        return 1;
-    }
-    else if (*lc == NULL) {
-        return 1;
-    }
-    else {
-        return 0;
-    }*/
     return lc == NULL || *lc == NULL;
 }
 
@@ -222,7 +210,7 @@ int removerMeioListaJogadores(ListaJogadores *lc, const char *cor, struct jogado
             return 0;
         }
         ant->prox = aux->prox;
-        *jogadorVez = ant->dados;//antes de ser eliminado ele passa a vez
+        *jogadorVez = ant->dados;
         free(aux);
     }
     return 1;
@@ -245,7 +233,7 @@ int removerDinheiroListaJogadores(ListaJogadores *lc, const char *cor, int qtd, 
                 *removido = removerMeioListaJogadores(lc, cor, jogadorVez);
             }
 
-            return qtd;//retorna a quantidade que deve pagar, resolve o caso dele ter que pagar 5 tendo apenas 3 por exemplo
+            return qtd;
         }
         aux = aux->prox;
     } while (aux != *lc);
@@ -263,7 +251,6 @@ int adicinarDinheiroListaJogadores(ListaJogadores *lc, const char *cor, int qtd)
         if (strcmp(aux->dados.cor, cor) == 0) {
             aux->dados.dinheiro += qtd;
 
-            //printf("Jogador %s recebeu %d. Novo saldo: %d\n", cor, qtd, aux->dados.dinheiro);
             return 1;
         }
         aux = aux->prox;
@@ -286,42 +273,36 @@ int removerTapeteListaJogadores(ListaJogadores *lc, struct jogadorOf *jogadorVez
                 aux->dados.quantidadeTapetes = 0;
             }
 
-            //printf("Jogador %s perdeu %d tapete(s). Restam: %d\n", cor, qtd, aux->dados.quantidadeTapetes);
             return 1;
         }
         aux = aux->prox;
     } while (aux != *lc);
 
-    //printf("Jogador com a cor %s nao encontrado.\n", cor);
     return 0;
 }
 
 int verificarFimJogo(ListaJogadores *lc) {
     if (vaziaListaJogadores(lc)) {
-        return 1; // Lista vazia, fim de jogo
+        return 1;
     }
 
     ElementoListaJogadores *inicio = *lc;
     ElementoListaJogadores *aux = inicio;
 
-    // Se só tem um jogador na lista
     if (aux->prox == aux) {
-        //printf("fim so tem um jogaador");
-        return 1; // Fim de jogo
+        return 1;
     }
 
-    // Verificar se todos os jogadores estão com 0 tapetes
-    int todosSemTapetes = 1; // Pressupõe que todos estão sem tapetes
+    int todosSemTapetes = 1;
 
     do {
         if (aux->dados.quantidadeTapetes > 0) {
-            todosSemTapetes = 0; // Achou um com tapetes, continua o jogo
+            todosSemTapetes = 0;
             break;
         }
         aux = aux->prox;
     } while (aux != inicio);
 
-    //printf("fim todos com 0");
     return todosSemTapetes;
 }
 
@@ -374,14 +355,12 @@ void verificarVencedor(ListaJogadores *lc) {
         return;
     }
 
-    // Contar jogadores
     int count = 0;
     do {
         count++;
         aux = aux->prox;
     } while (aux != inicio);
 
-    // Copiar jogadores para vetor
     ElementoListaJogadores *jogadores[count];
     aux = inicio;
     for (int i = 0; i < count; i++) {
@@ -389,7 +368,6 @@ void verificarVencedor(ListaJogadores *lc) {
         aux = aux->prox;
     }
 
-    // Ordenar jogadores por dinheiro (bubble sort)
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - 1 - i; j++) {
             if (jogadores[j]->dados.dinheiro < jogadores[j + 1]->dados.dinheiro) {
@@ -400,7 +378,6 @@ void verificarVencedor(ListaJogadores *lc) {
         }
     }
 
-    // Imprimir ranking
     printf("\t\t\t+---------+----------+----------+\n");
     printf("\t\t\t| Ranking |   Cor    | Dinheiro |\n");
     printf("\t\t\t+---------+----------+----------+\n");
@@ -432,7 +409,6 @@ void verificarVencedor(ListaJogadores *lc) {
     }
     printf("\t\t\t+---------+----------+----------+\n");
 
-    // Verificar empate
     if (jogadores[0]->dados.dinheiro == jogadores[1]->dados.dinheiro) {
         printf("\t\t   Empate entre jogadores com maior dinheiro:\n");
         for (int i = 0; i < count; i++) {
@@ -523,7 +499,6 @@ void passarVez(ListaJogadores *lc, struct jogadorOf *j) {
 
     do {
         if (strcmp(atual->dados.cor, j->cor) == 0) {
-            // Encontrou: o próximo é o jogador da vez
             *j = atual->prox->dados;
             return;
         }

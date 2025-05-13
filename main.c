@@ -12,6 +12,11 @@ int main() {
     DWORD threadId;
     system("cls");
 
+    if (TAM < 3) {
+        printf("Tamanho inválido de tabuleiro.\n");
+        return 1;
+    }
+
     int qnt, fim = 0, sentido, dice, diceAux = 0, tap1, tap2;
     struct jogadorOf *jogadorVez = criarJ();
 
@@ -77,7 +82,7 @@ int main() {
             printState(pieceAssam, tab, lista, jogadorVez);
             printf("Onde deseja colocar um tapete?\nDigite um número em relação à Assam: Norte(0), Leste(1), Sul(2), Oeste(3) ");
             scanf("%d", &tap1);
-            printf("Agora, em relação ao primeiro tapete ");
+            printf("Agora, em relação ao primeiro tapete: ");
             scanf("%d", &tap2);
             fflush(stdin);
         } while (!putTapete(tab, pieceAssam, tap1, tap2, lista, jogadorVez));
