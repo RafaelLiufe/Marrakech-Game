@@ -4,8 +4,8 @@
 Uma implementação do famoso jogo de tabuleiro Marrakech em linguagem C.
 
 ## Autores:
-[Rafael Liufe](https://github.com/RafaelLiufe)
-[Kayky Moreira](https://github.com/Kayky-MM)
+[Rafael Liufe](https://github.com/RafaelLiufe) <br>
+[Kayky Moreira](https://github.com/Kayky-MM)<br>
 [Otávio Ferreira](https://github.com/Otavio-Ferreira)
 
 Estudantes de Ciência da Computação da [Universidade Federal do Cariri](https://www.ufca.edu.br/).
